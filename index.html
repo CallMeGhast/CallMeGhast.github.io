@@ -2,16 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kai's Domain</title>
+    <title>Kai Sanchez Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <h1>Welcome to Kai's World</h1>
-        <p>This is my first website.</p>
-        <button onclick="changeText()">Enter</button>
-        <p id="secret"></p>
+    <div class="intro">
+        <h1 id="intro-text">I am Kai Sanchez</h1>
+        <p id="tagline">Click below to reveal more about me.</p>
+        <button onclick="showInfo()">Reveal Info</button>
+    </div>
+
+    <div class="info" id="info-section">
+        <h2>About Me</h2>
+        <p>I'm a developer, anime enthusiast, and explorer of digital worlds.</p>
+
+        <h2>Skills</h2>
+        <ul>
+            <li>HTML / CSS / JavaScript</li>
+            <li>Web Animations & Interactivity</li>
+            <li>Problem Solving & Creativity</li>
+        </ul>
+
+        <h2>Projects</h2>
+        <p>Check out my GitHub for cool projects!</p>
+
+        <h2>Contact</h2>
+        <p>Email: kai@example.com</p>
+        <p>GitHub: <a href="https://github.com/kai-sanchez" target="_blank">kai-sanchez</a></p>
     </div>
 
 <script src="script.js"></script>
