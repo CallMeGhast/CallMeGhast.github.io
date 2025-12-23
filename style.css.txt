@@ -1,0 +1,31 @@
+body {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: white;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: rgba(0,0,0,0.4);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0,0,0,0.7);
+}
+
+button {
+    padding: 12px 25px;
+    background: crimson;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: darkred;
+}
