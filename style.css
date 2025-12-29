@@ -1,36 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Kai | Personal Website</title>
-    <!-- Link to your CSS -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    text-align: center;
+}
 
-    <div class="intro">
-        <h1>Hey, my name is Kai. Welcome to my domain</h1>
-        <button id="enter-btn">Enter</button>
-    </div>
+.intro {
+    padding: 50px;
+}
 
-    <div class="info">
-        <h2>About Me</h2>
-        <p>This is a placeholder for your info.</p>
-    </div>
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: crimson;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-    <script>
-        const enterBtn = document.getElementById("enter-btn");
-        const intro = document.querySelector(".intro");
-        const info = document.querySelector(".info");
+button:hover {
+    background: darkred;
+    transform: scale(1.05);
+}
 
-        enterBtn.addEventListener("click", () => {
-            intro.style.transition = "opacity 1s";
-            intro.style.opacity = 0;
-            setTimeout(() => {
-                intro.style.display = "none";
-                info.style.display = "block";
-            }, 1000);
-        });
-    </script>
-</body>
-</html>
+.info {
+    margin-top: 50px;
+    display: none; /* Hidden initially */
+}
+
+.info h2 {
+    margin-bottom: 10px;
+    color: #ff4c4c;
+}
+
+.info a {
+    color: #ff4c4c;
+    text-decoration: none;
+}
+
+.info a:hover {
+    text-decoration: underline;
+}
