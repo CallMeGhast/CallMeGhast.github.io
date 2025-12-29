@@ -1,13 +1,19 @@
-function showInfo() {
-    const info = document.getElementById("info-section");
-    info.style.display = "block";
+const enterBtn = document.getElementById("enter-btn");
+const welcome = document.getElementById("welcome-screen");
+const menu = document.getElementById("main-menu");
+const content = document.getElementById("content");
 
-    // Optional: animate intro text fading out
-    const intro = document.getElementById("intro-text");
-    intro.style.transition = "opacity 1s";
-    intro.style.opacity = 0;
+enterBtn.addEventListener("click", () => {
+    welcome.classList.remove("active");
+    setTimeout(() => {
+        menu.classList.add("active");
+    }, 800);
+});
 
-    const tagline = document.getElementById("tagline");
-    tagline.style.transition = "opacity 1s";
-    tagline.style.opacity = 0;
+function showContent() {
+    content.style.opacity = 0;
+    setTimeout(() => {
+        content.innerText = "Not added yet.";
+        content.style.opacity = 1;
+    }, 300);
 }
