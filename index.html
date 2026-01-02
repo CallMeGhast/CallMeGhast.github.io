@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Kai | Personal Domain</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Kai | Personal Domain</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="welcome-screen" class="screen active">
-    <h1>Hey, my name is Kai.<br>Welcome to my domain</h1>
-    <button id="enter-btn">Enter</button>
-</div>
+<header>
+  <div class="logo" onclick="loadSection('overview')">K</div>
+  <nav>
+    <button onclick="loadSection('overview')">Overview</button>
+    <button onclick="loadSection('experience')">Experience</button>
+    <button onclick="loadSection('interests')">Interests</button>
+    <button onclick="loadSection('skills')">Skills</button>
+  </nav>
+</header>
 
-<div id="main-menu" class="screen">
-    <div class="menu">
-        <button onclick="showContent()">Experience</button>
-        <button onclick="showContent()">Personality</button>
-        <button onclick="showContent()">Hobbies</button>
-        <button onclick="showContent()">Interests</button>
-        <button onclick="showContent()">Skills</button>
-        <div id="content"></div>
-    </div>
+<main id="content"></main>
+
+<div class="contact-box" id="contactBox">
+  <div class="contact-toggle" onclick="toggleContact()">Contact</div>
+  <div class="contact-content">
+    <p>Email:<br><a href="mailto:qaisaralgafari@gmail.com">qaisaralgafari@gmail.com</a></p>
+    <p>Phone:<br>+49 17687966689</p>
+  </div>
 </div>
 
 <script src="script.js"></script>
