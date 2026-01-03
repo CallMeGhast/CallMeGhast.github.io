@@ -8,16 +8,21 @@
 <body>
 
 <header>
-  <div class="logo" onclick="loadSection('overview')">K</div>
+  <div class="logo" onclick="loadSection('overview')"></div>
+
   <nav>
     <button onclick="loadSection('overview')">Overview</button>
     <button onclick="loadSection('experience')">Experience</button>
     <button onclick="loadSection('interests')">Interests</button>
     <button onclick="loadSection('skills')">Skills</button>
   </nav>
+
+  <div class="controller-btn">🎮</div>
 </header>
 
-<main id="content"></main>
+<main>
+  <div id="content" class="fade"></div>
+</main>
 
 <div class="contact-box" id="contactBox">
   <div class="contact-toggle" onclick="toggleContact()">Contact</div>
@@ -30,4 +35,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
