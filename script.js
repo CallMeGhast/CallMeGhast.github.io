@@ -5,34 +5,32 @@ function toggleContact(){
   contactBox.classList.toggle("open");
 }
 
+function fadeChange(html){
+  content.classList.add("hide");
+  setTimeout(()=>{
+    content.innerHTML = html;
+    content.classList.remove("hide");
+  },200);
+}
+
 function loadSection(section){
-  if(section==="overview"){
-    content.innerHTML=`Ich habe meinen Schulabschluss nach der 10. Klasse gemacht und habe seit jungen Jahren großes Interesse an der IT...`;
-  }
 
-  if(section==="skills"){
-    content.innerHTML=`
-<h2>Grundkenntnisse in Informationstechnologie</h2>
-<p>PC- & Windows-Kenntnisse<br>Umgang mit Hardware<br>Grundverständnis von Netzwerken<br>Sicherer Umgang mit Internet & E-Mail<br>Microsoft Office / Google Docs<br>Grundkenntnisse im Umgang mit Software & Updates<br>Schnelle Auffassungsgabe bei neuen Programmen<br>Grundwissen im Aufbau von Programmiersprachen<br>Erste Erfahrungen mit CSS, HTML, JavaScript</p>
+if(section==="overview"){
+fadeChange(`Ich habe meinen Schulabschluss nach der 10. Klasse gemacht und habe seit jungen Jahren großes Interesse an der IT. Bereits in der 6. und 7. Klasse habe ich an ersten IT-Kursen teilgenommen und dadurch grundlegende Einblicke in die Welt der Informationstechnologie erhalten. Besonders gefällt mir an der IT das Arbeiten mit Problemen und das Finden von Lösungen. Ich bin motiviert, mir neues Wissen anzueignen und dieses praktisch anzuwenden. Mein Ziel ist es, meine Kenntnisse Schritt für Schritt zu erweitern und mich in diesem Bereich weiterzuentwickeln. Ich arbeite zuverlässig, lerne schnell und habe Freude daran, mich mit technischen Themen zu beschäftigen.`);
+}
 
-<h2>Sprachen</h2>
-<p>Deutsch – sehr gut<br>Englisch – fließend<br>Arabisch – fließend</p>
+if(section==="experience"){
+fadeChange(`<h2>Erfahrungen</h2>
+<p>Während meiner Schulzeit habe ich erste praktische Erfahrungen im IT-Bereich gesammelt... motivieren mich, meine Kenntnisse kontinuierlich auszubauen.</p>`);
+}
 
-<h2>Kommunikations-Skills</h2>
-<p>Freundlicher Umgang mit Kunden / Kollegen<br>Technische Probleme einfach erklären<br>Hilfsbereitschaft</p>
+if(section==="interests"){
+fadeChange(`Mein Interesse an der Informationstechnologie entwickelte sich schon früh... meine Interessen in der IT weiter zu vertiefen.`);
+}
 
-<h2>Persönliche Stärken</h2>
-<p>Problemlösungsorientiert<br>Zuverlässig & Pünktlich<br>Lernbereit<br>Selbstständig<br>Teamfähig<br>Geduldig<br>Sorgfältig<br>Verantwortungsbewusst</p>
-`;
-  }
-
-  if(section==="interests"){
-    content.innerHTML=`Mein Interesse an der Informationstechnologie entwickelte sich schon früh...`;
-  }
-
-  if(section==="experience"){
-    content.innerHTML=`Not added yet.`;
-  }
+if(section==="skills"){
+fadeChange(`<h2>Grundkenntnisse in IT</h2><p>PC & Windows, Hardware, Netzwerke, HTML, CSS, JavaScript u.v.m.</p>`);
+}
 }
 
 loadSection("overview");
