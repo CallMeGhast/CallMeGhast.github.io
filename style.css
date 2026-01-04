@@ -35,6 +35,7 @@ header{
     z-index:10;
 }
 
+/* Top-left rhombus crystal logo */
 .logo {
     width:28px;
     height:28px;
@@ -49,12 +50,16 @@ header{
     transform: rotate(10deg) scale(1.1);
 }
 
+/* Top navigation */
 nav{
     display:flex;
     gap:18px;
+    flex:1; /* take remaining space between logo and controller */
+    justify-content:flex-start;
+    margin-left:20px; /* space after logo */
 }
 
-nav button, .controller-btn{
+nav button{
     background:transparent;
     border:none;
     color:#bbb;
@@ -63,30 +68,30 @@ nav button, .controller-btn{
     transition:.3s;
 }
 
-nav button:hover, .controller-btn:hover{
+nav button:hover{
     color:var(--white);
     text-shadow:0 0 10px var(--purple);
 }
 
 /* Top-right game controller button */
-/* Top-right game controller button */
 .controller-btn {
-    position: fixed;
-    top: 18px; /* aligns vertically with the header */
-    right: 30px; /* aligns horizontally with the header padding */
-    background: transparent; /* remove any box or background */
+    position: absolute; /* top-right inside header */
+    right:30px;
+    top:50%;
+    transform: translateY(-50%);
+    background: transparent;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 11; /* above header */
+    z-index: 11;
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .controller-btn svg {
-    width: 32px; /* slightly larger */
-    height: 32px;
+    width: 36px; /* larger and visible */
+    height: 36px;
     fill: var(--white);
     transition: transform 0.3s ease, filter 0.3s ease;
 }
@@ -96,7 +101,7 @@ nav button:hover, .controller-btn:hover{
     transform: scale(1.15); /* subtle enlarge on hover */
 }
 
-
+/* Main content */
 main{
     margin-top:70px;
     height:calc(100vh - 70px);
@@ -165,5 +170,3 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
-
-
