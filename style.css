@@ -69,22 +69,33 @@ nav button:hover, .controller-btn:hover{
 }
 
 /* Top-right game controller button */
+/* Top-right game controller button */
 .controller-btn {
-    font-size:28px;
-    background: var(--grey);
+    position: fixed;
+    top: 18px; /* aligns vertically with the header */
+    right: 30px; /* aligns horizontally with the header padding */
+    background: transparent; /* remove any box or background */
     border: none;
-    border-radius: 8px;
-    padding: 6px 10px;
     cursor: pointer;
-    color: var(--white);
-    box-shadow: 0 0 8px rgba(106,0,255,0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11; /* above header */
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.controller-btn:hover {
-    transform: rotate(-10deg) scale(1.1);
-    box-shadow: 0 0 16px rgba(106,0,255,0.8);
+.controller-btn svg {
+    width: 32px; /* slightly larger */
+    height: 32px;
+    fill: var(--white);
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
+
+.controller-btn:hover svg {
+    filter: drop-shadow(0 0 8px var(--purple));
+    transform: scale(1.15); /* subtle enlarge on hover */
+}
+
 
 main{
     margin-top:70px;
@@ -154,4 +165,5 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
+
 
