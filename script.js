@@ -17,6 +17,7 @@ function loadSection(section){
 
 if(section==="overview"){
 fadeChange(`
+<h2>Überblick</h2>
 <p>
 Ich habe meinen Schulabschluss nach der 10. Klasse gemacht und habe seit jungen Jahren großes Interesse an der IT. Bereits in der 6. und 7. Klasse habe ich an ersten IT-Kursen teilgenommen und dadurch grundlegende Einblicke in die Welt der Informationstechnologie erhalten. Besonders gefällt mir an der IT das Arbeiten mit Problemen und das Finden von Lösungen. Ich bin motiviert, mir neues Wissen anzueignen und dieses praktisch anzuwenden. Mein Ziel ist es, meine Kenntnisse Schritt für Schritt zu erweitern und mich in diesem Bereich weiterzuentwickeln. Ich arbeite zuverlässig, lerne schnell und habe Freude daran, mich mit technischen Themen zu beschäftigen.
 </p>
@@ -38,6 +39,7 @@ Diese Erfahrungen haben mein Interesse an der IT weiter verstärkt und motiviere
 
 if(section==="interests"){
 fadeChange(`
+<h2>Interessen</h2>
 <p>
 Mein Interesse an der Informationstechnologie entwickelte sich schon früh, da mich Computer und digitale Systeme schon immer fasziniert haben. Besonders spannend finde ich es, wie aus Code funktionierende Programme und Anwendungen entstehen.
 <br><br>
@@ -94,3 +96,4 @@ Verantwortungsbewusstsein
 }
 
 loadSection("overview");
+
