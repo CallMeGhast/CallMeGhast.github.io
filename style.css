@@ -75,12 +75,10 @@ nav button:hover{
 
 /* Top-right game controller button */
 .controller-btn {
-    position: absolute; /* top-right inside header */
-    right:30px;
-    top:50%;
+    position: absolute; /* inside header */
+    right: 30px;
+    top: 50%;
     transform: translateY(-50%);
-    background: transparent;
-    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -90,16 +88,17 @@ nav button:hover{
 }
 
 .controller-btn svg {
-    width: 36px; /* larger and visible */
-    height: 36px;
-    fill: var(--white);
+    width: 40px;  /* larger and balanced */
+    height: 40px;
+    fill: var(--white); /* ensures the icon matches theme */
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .controller-btn:hover svg {
-    filter: drop-shadow(0 0 8px var(--purple));
-    transform: scale(1.15); /* subtle enlarge on hover */
+    transform: rotate(-10deg) scale(1.15); /* subtle rotation + scale like logo */
+    filter: drop-shadow(0 0 10px var(--purple)); /* purple glow on hover */
 }
+
 
 /* Main content */
 main{
@@ -170,3 +169,4 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
+
