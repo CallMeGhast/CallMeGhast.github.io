@@ -35,13 +35,20 @@ border-bottom:1px solid #1a1a1a;
 z-index:10;
 }
 
-.logo{
-width:26px;
-height:26px;
-background:var(--purple);
-clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-cursor:pointer;
+.logo {
+    width:28px;
+    height:28px;
+    background: linear-gradient(145deg, #7a00ff, #4b00aa);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.2);
+    transition: transform 0.3s ease;
 }
+
+.logo:hover {
+    transform: rotate(10deg) scale(1.1);
+}
+
 
 nav{
 display:flex;
@@ -129,5 +136,6 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
+
 
 
