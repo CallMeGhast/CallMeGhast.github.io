@@ -97,3 +97,25 @@ Verantwortungsbewusstsein
 
 loadSection("overview");
 
+// Add this at the end of your script.js
+
+// Controller button opens Game Hub
+const controllerBtn = document.querySelector(".controller-btn");
+controllerBtn.addEventListener("click", loadGameHub);
+
+function loadGameHub() {
+    fadeChange(`
+        <div class="game-hub">
+            <button onclick="alert('Flappy Bird coming soon!')">Flappy bird!</button>
+            <button onclick="alert('Snake Game coming soon!')">Snake game!</button>
+            <button onclick="alert('Dodge the blocks coming soon!')">Dodge the blocks!</button>
+        </div>
+        <button class="return-btn" onclick="returnHome()">Return</button>
+    `);
+}
+
+// Return button goes back to homepage (Overview)
+function returnHome() {
+    loadSection("overview");
+}
+
