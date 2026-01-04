@@ -87,6 +87,7 @@ opacity:0;
     bottom:20px;
     right:20px;
     width:180px;
+    box-sizing: border-box; 
     border-radius:12px;
     background:#111;
     overflow:hidden;
@@ -128,4 +129,5 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
+
 
