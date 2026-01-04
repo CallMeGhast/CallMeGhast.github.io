@@ -1,38 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
 
 :root{
---bg:#0f0f0f;
---grey:#222;
---white:#fff;
---purple:#6a00ff;
+    --bg:#0f0f0f;
+    --grey:#222;
+    --white:#fff;
+    --purple:#6a00ff;
 }
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter',sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
 }
 
 body{
-background:var(--bg);
-color:var(--white);
-height:100vh;
-overflow:hidden;
+    background:var(--bg);
+    color:var(--white);
+    height:100vh;
+    overflow:hidden;
 }
 
 header{
-position:fixed;
-top:0;
-width:100%;
-height:60px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 30px;
-background:#111;
-border-bottom:1px solid #1a1a1a;
-z-index:10;
+    position:fixed;
+    top:0;
+    width:100%;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    background:#111;
+    border-bottom:1px solid #1a1a1a;
+    z-index:10;
 }
 
 .logo {
@@ -49,46 +49,64 @@ z-index:10;
     transform: rotate(10deg) scale(1.1);
 }
 
-
 nav{
-display:flex;
-gap:18px;
+    display:flex;
+    gap:18px;
 }
 
 nav button, .controller-btn{
-background:transparent;
-border:none;
-color:#bbb;
-cursor:pointer;
-font-size:15px;
-transition:.3s;
+    background:transparent;
+    border:none;
+    color:#bbb;
+    cursor:pointer;
+    font-size:15px;
+    transition:.3s;
 }
 
 nav button:hover, .controller-btn:hover{
-color:var(--white);
-text-shadow:0 0 10px var(--purple);
+    color:var(--white);
+    text-shadow:0 0 10px var(--purple);
+}
+
+/* Top-right game controller button */
+.controller-btn {
+    font-size:28px;
+    background: var(--grey);
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    color: var(--white);
+    box-shadow: 0 0 8px rgba(106,0,255,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.controller-btn:hover {
+    transform: rotate(-10deg) scale(1.1);
+    box-shadow: 0 0 16px rgba(106,0,255,0.8);
 }
 
 main{
-margin-top:70px;
-height:calc(100vh - 70px);
-overflow-y:auto;
-padding:40px;
-max-width:850px;
-margin-inline:auto;
-line-height:1.7;
-color:#ccc;
+    margin-top:70px;
+    height:calc(100vh - 70px);
+    overflow-y:auto;
+    padding:40px;
+    max-width:850px;
+    margin-inline:auto;
+    line-height:1.7;
+    color:#ccc;
 }
 
 .fade{
-opacity:1;
-transition:.4s;
+    opacity:1;
+    transition:.4s;
 }
 
 .fade.hide{
-opacity:0;
+    opacity:0;
 }
 
+/* Contact box (bottom-right) */
 .contact-box{
     position:fixed;
     bottom:20px;
@@ -127,7 +145,7 @@ opacity:0;
     text-decoration:none;
 }
 
-
+/* Headings */
 h2 {
     font-size: 22px;
     margin-bottom: 12px;
@@ -136,6 +154,3 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
-
-
-
