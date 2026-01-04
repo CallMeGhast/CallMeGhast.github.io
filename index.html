@@ -17,19 +17,26 @@
     <button onclick="loadSection('skills')">Skills</button>
   </nav>
 
-  <!-- Top-right SVG game controller button -->
-  <button class="controller-btn" id="controller-btn">
-    <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Controller body -->
-      <rect x="12" y="28" width="40" height="12" rx="6" fill="var(--grey)"/>
-      <!-- Buttons -->
-      <circle cx="20" cy="34" r="4" fill="var(--purple)"/>
-      <circle cx="28" cy="34" r="4" fill="var(--purple)"/>
-      <circle cx="36" cy="34" r="4" fill="var(--purple)"/>
-      <circle cx="44" cy="34" r="4" fill="var(--purple)"/>
-    </svg>
-  </button>
-</header>
+<!-- Top-right classic game controller button -->
+<button class="controller-btn" id="controller-btn">
+  <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Controller body -->
+    <path d="M8 28c0-4.418 3.582-8 8-8h32c4.418 0 8 3.582 8 8v8c0 4.418-3.582 8-8 8H16c-4.418 0-8-3.582-8-8v-8z" fill="var(--grey)" stroke="var(--purple)" stroke-width="2"/>
+    
+    <!-- Left buttons (D-pad) -->
+    <circle cx="20" cy="32" r="2" fill="var(--purple)"/>
+    <circle cx="16" cy="28" r="2" fill="var(--purple)"/>
+    <circle cx="16" cy="36" r="2" fill="var(--purple)"/>
+    <circle cx="12" cy="32" r="2" fill="var(--purple)"/>
+    
+    <!-- Right buttons -->
+    <circle cx="44" cy="28" r="2" fill="var(--purple)"/>
+    <circle cx="48" cy="32" r="2" fill="var(--purple)"/>
+    <circle cx="44" cy="36" r="2" fill="var(--purple)"/>
+    <circle cx="48" cy="36" r="2" fill="var(--purple)"/>
+  </svg>
+</button>
+
 
 <main>
   <div id="content" class="fade"></div>
@@ -46,3 +53,4 @@
 <script src="script.js"></script>
 </body>
 </html>
+
