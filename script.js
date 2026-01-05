@@ -1,3 +1,7 @@
+const content = document.getElementById("content");
+const returnBtn = document.getElementById("returnBtn");
+const controllerBtn = document.querySelector(".controller-btn");
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const content = document.getElementById("content");
@@ -257,6 +261,7 @@ function loadFlappyBird() {
     `;
     startFlappyBird();
 }
+
 
 
 
