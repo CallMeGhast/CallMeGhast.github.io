@@ -119,21 +119,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.loadSection = loadSection;
 
-    function loadGameHub() {
-        fadeChange(`
-            <div class="game-hub">
-                <button>Flappy bird!</button>
-                <button>Snake game!</button>
-                <button>Dodge the blocks!</button>
-            </div>
-        `);
-        returnBtn.style.display = "block";
-    }
+function loadGameHub() {
+    fadeChange(`
+        <div class="game-hub">
+            <button>Flappy bird!</button>
+            <button>Snake game!</button>
+            <button>Snake game!</button>
+            <button>Dodge the blocks!</button>
+        </div>
+    `);
+    returnBtn.classList.add("show");
+}
 
-    function returnHome() {
-        returnBtn.style.display = "none";
-        loadSection("overview");
-    }
+function returnHome() {
+    returnBtn.classList.remove("show");
+    loadSection("overview");
+}
 
     window.returnHome = returnHome;
 
@@ -141,3 +142,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadSection("overview");
 });
+
