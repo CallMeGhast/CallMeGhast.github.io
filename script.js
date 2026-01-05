@@ -3,7 +3,6 @@ const returnBtn = document.getElementById("returnBtn");
 const controllerBtn = document.querySelector(".controller-btn");
 const contactBox = document.getElementById("contactBox");
 
-
 document.addEventListener("DOMContentLoaded", () => {
 
     function toggleContact() {
@@ -11,17 +10,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     window.toggleContact = toggleContact;
 
- function fadeChange(html, callback) {
-    content.classList.add("hide");
-    setTimeout(() => {
-        content.innerHTML = html;
-        content.classList.remove("hide");
-        if(callback) callback(); // run the function after content is updated
-    }, 200);
-}
+    function fadeChange(html, callback) {
+        content.classList.add("hide");
+        setTimeout(() => {
+            content.innerHTML = html;
+            content.classList.remove("hide");
+            if(callback) callback(); // run the function after content is updated
+        }, 200);
+    }
 
     function loadSection(section) {
-
         let html = "";
 
         if(section==="overview"){
@@ -121,22 +119,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.loadSection = loadSection;
 
-function loadGameHub() {
-    fadeChange(`
-        <div class="game-hub">
-            <button onclick="loadFlappyBird()">Flappy bird!</button>
-            <button onclick="loadSnake()">Snake game!</button>
-            <button onclick="loadDodgeBlocks()">Dodge the blocks!</button>
-        </div>
-    `);
-    returnBtn.classList.add("show"); // show the return button
-}
+    function loadGameHub() {
+        fadeChange(`
+            <div class="game-hub">
+                <button id="flappyBtn">Flappy bird!</button>
+                <button id="snakeBtn">Snake game!</button>
+                <button id="dodgeBtn">Dodge the blocks!</button>
+            </div>
+        `, () => {
+            returnBtn.classList.add("show"); // show return button
 
-function returnHome() {
-    returnBtn.classList.remove("show"); // hide it
-    loadSection("overview"); // go back to overview text
-}
+            // Flappy Bird button now functional
+            document.getElementById("flappyBtn").addEventListener("click", loadFlappyBird);
+            // Snake and Dodge buttons can be added similarly
+            // document.getElementById("snakeBtn").addEventListener("click", loadSnake);
+            // document.getElementById("dodgeBtn").addEventListener("click", loadDodgeBlocks);
+        });
+    }
 
+    function returnHome() {
+        returnBtn.classList.remove("show"); // hide it
+        loadSection("overview"); // go back to overview text
+    }
 
     window.returnHome = returnHome;
 
@@ -152,7 +156,6 @@ function startFlappyBird() {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Game variables
     let bird = { x: 80, y: 300, width: 30, height: 30, dy: 0 };
     let gravity = 0.6;
     let jump = -10;
@@ -163,13 +166,11 @@ function startFlappyBird() {
     let score = 0;
     let gameOver = false;
 
-    // Create new pipe
     function createPipe() {
         let topHeight = Math.floor(Math.random() * (height - pipeGap - 100)) + 50;
         pipes.push({ x: width, top: topHeight, bottom: topHeight + pipeGap });
     }
 
-    // Reset game
     function resetGame() {
         bird.y = 300;
         bird.dy = 0;
@@ -180,42 +181,34 @@ function startFlappyBird() {
         document.getElementById("score").innerText = score;
     }
 
-    // Controls
     function flap() {
         if (!gameOver) bird.dy = jump;
         else resetGame();
     }
+
     document.addEventListener("keydown", e => {
         if (e.code === "Space") flap();
     });
     canvas.addEventListener("click", flap);
 
-    // Game loop
     function loop() {
         ctx.clearRect(0, 0, width, height);
 
-        // Bird physics
         bird.dy += gravity;
         bird.y += bird.dy;
 
-        // Draw bird
         ctx.fillStyle = "var(--purple)";
         ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-        // Pipes
         if (frame % 90 === 0) createPipe();
         for (let i = 0; i < pipes.length; i++) {
             let p = pipes[i];
             p.x -= 3;
 
-            // Top pipe
             ctx.fillStyle = "#444";
             ctx.fillRect(p.x, 0, pipeWidth, p.top);
-
-            // Bottom pipe
             ctx.fillRect(p.x, p.bottom, pipeWidth, height - p.bottom);
 
-            // Check collision
             if (
                 bird.x + bird.width > p.x &&
                 bird.x < p.x + pipeWidth &&
@@ -224,7 +217,6 @@ function startFlappyBird() {
                 gameOver = true;
             }
 
-            // Increase score
             if (!p.passed && p.x + pipeWidth < bird.x) {
                 score++;
                 p.passed = true;
@@ -232,7 +224,6 @@ function startFlappyBird() {
             }
         }
 
-        // Ground / ceiling collision
         if (bird.y + bird.height > height || bird.y < 0) gameOver = true;
 
         frame++;
@@ -255,13 +246,5 @@ function loadFlappyBird() {
             <canvas id="flappyCanvas" width="400" height="600"></canvas>
             <div class="score-display">Score: <span id="score">0</span></div>
         </div>
-    `, startFlappyBird); // callback ensures the canvas exists first
+    `, startFlappyBird); // callback ensures canvas exists first
 }
-
-
-
-
-
-
-
-
