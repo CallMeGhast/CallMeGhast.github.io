@@ -246,5 +246,17 @@ function startFlappyBird() {
     loop();
 }
 
+function loadFlappyBird() {
+    fadeChange(`
+        <div class="flappy-game-container">
+            <canvas id="flappyCanvas" width="400" height="600"></canvas>
+            <div class="score-display">Score: <span id="score">0</span></div>
+            <button class="return-btn" onclick="returnHome()">Return</button>
+        </div>
+    `);
+
+    startFlappyBird();
+}
+
 
 
