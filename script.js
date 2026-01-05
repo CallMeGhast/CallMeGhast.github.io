@@ -5,24 +5,27 @@ const contactBox = document.getElementById("contactBox");
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    // Toggle contact box
     function toggleContact() {
         contactBox.classList.toggle("open");
     }
     window.toggleContact = toggleContact;
 
+    // Fade change function for text sections
     function fadeChange(html, callback) {
         content.classList.add("hide");
         setTimeout(() => {
             content.innerHTML = html;
             content.classList.remove("hide");
-            if(callback) callback(); // run the function after content is updated
+            if (callback) callback(); // run after content is loaded
         }, 200);
     }
 
+    // Load main text sections
     function loadSection(section) {
         let html = "";
 
-        if(section==="overview"){
+        if (section === "overview") {
             html = `
             <h2>Überblick</h2>
             <p>
@@ -35,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>`;
         }
 
-        if(section==="experience"){
+        if (section === "experience") {
             html = `
             <h2>Erfahrungen</h2>
             <p>
@@ -53,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>`;
         }
 
-        if(section==="interests"){
+        if (section === "interests") {
             html = `
             <h2>Interessen</h2>
             <p>
@@ -71,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>`;
         }
 
-        if(section==="skills"){
+        if (section === "skills") {
             html = `
             <h2>Grundkenntnisse in Informationstechnologie</h2>
             <p>
@@ -113,43 +116,55 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>`;
         }
 
-        returnBtn.style.display = "none";
+        returnBtn.style.display = "none"; // hide return button for text sections
         fadeChange(html);
     }
 
     window.loadSection = loadSection;
 
-function loadGameHub() {
-    fadeChange(`
-        <div class="game-hub">
-            <button onclick="loadFlappyBird()">Flappy bird!</button>
-            <button onclick="loadSnake()">Snake game!</button>
-            <button onclick="loadDodgeBlocks()">Dodge the blocks!</button>
-        </div>
-    `);
-    returnBtn.classList.add("show"); // show the return button
-}
-
-
+    // Game Hub
+    function loadGameHub() {
+        fadeChange(`
+            <div class="game-hub">
+                <button id="flappyBtn">Flappy bird!</button>
+                <button id="snakeBtn">Snake game!</button>
+                <button id="dodgeBtn">Dodge the blocks!</button>
+            </div>
+        `, () => {
+            // Make buttons functional after content exists
+            document.getElementById("flappyBtn").addEventListener("click", loadFlappyBird);
+            // Placeholder for other games
+            // document.getElementById("snakeBtn").addEventListener("click", loadSnake);
+            // document.getElementById("dodgeBtn").addEventListener("click", loadDodgeBlocks);
         });
+        returnBtn.classList.add("show"); // show return button
     }
 
+    window.loadGameHub = loadGameHub;
+
+    // Return Home
     function returnHome() {
-        returnBtn.classList.remove("show"); // hide it
-        loadSection("overview"); // go back to overview text
+        // Remove any existing game container
+        const existingGame = document.querySelector(".flappy-game-container");
+        if (existingGame) existingGame.remove();
+
+        returnBtn.classList.remove("show");
+        loadSection("overview");
     }
 
     window.returnHome = returnHome;
 
+    // Controller button opens Game Hub
     controllerBtn.addEventListener("click", loadGameHub);
 
+    // Initial section
     loadSection("overview");
 });
 
+// Flappy Bird game
 function startFlappyBird() {
     const canvas = document.getElementById("flappyCanvas");
     const ctx = canvas.getContext("2d");
-
     const width = canvas.width;
     const height = canvas.height;
 
@@ -237,12 +252,14 @@ function startFlappyBird() {
     loop();
 }
 
+// Load Flappy Bird
 function loadFlappyBird() {
     fadeChange(`
         <div class="flappy-game-container">
             <canvas id="flappyCanvas" width="400" height="600"></canvas>
             <div class="score-display">Score: <span id="score">0</span></div>
         </div>
-    `, startFlappyBird); // callback ensures canvas exists first
-}
+    `, startFlappyBird);
 
+    returnBtn.classList.add("show");
+}
