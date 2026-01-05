@@ -247,20 +247,17 @@ function startFlappyBird() {
 }
 
 function loadFlappyBird() {
-    fadeChange(`
+    // Clear previous game if any
+    content.innerHTML = `
         <div class="flappy-game-container">
             <canvas id="flappyCanvas" width="400" height="600"></canvas>
             <div class="score-display">Score: <span id="score">0</span></div>
             <button class="return-btn" onclick="returnHome()">Return</button>
         </div>
-    `);
-
-    // Wait for fadeChange to finish (200ms) before starting the game
-    setTimeout(startFlappyBird, 250);
-}
-
+    `;
     startFlappyBird();
 }
+
 
 
 
