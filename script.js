@@ -255,8 +255,13 @@ function loadFlappyBird() {
         </div>
     `);
 
+    // Wait for fadeChange to finish (200ms) before starting the game
+    setTimeout(startFlappyBird, 250);
+}
+
     startFlappyBird();
 }
+
 
 
 
