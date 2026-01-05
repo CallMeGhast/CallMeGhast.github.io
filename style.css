@@ -242,6 +242,8 @@ main{
     cursor: pointer;
     font-weight: 500;
     transition: transform 0.3s ease, filter 0.3s ease;
+    z-index: 9999;
+    display: none;
 }
 
 .return-btn:hover {
@@ -258,6 +260,7 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
+
 
 
 
