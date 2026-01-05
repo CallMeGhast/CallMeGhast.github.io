@@ -99,9 +99,7 @@ loadSection("overview");
 
 // Add this at the end of your script.js
 
-// Controller button opens Game Hub
-const controllerBtn = document.querySelector(".controller-btn");
-controllerBtn.addEventListener("click", loadGameHub);
+const returnBtn = document.getElementById("returnBtn");
 
 function loadGameHub() {
     fadeChange(`
@@ -110,12 +108,13 @@ function loadGameHub() {
             <button onclick="alert('Snake Game coming soon!')">Snake game!</button>
             <button onclick="alert('Dodge the blocks coming soon!')">Dodge the blocks!</button>
         </div>
-        <button class="return-btn" onclick="returnHome()">Return</button>
     `);
+    returnBtn.style.display = "block"; // show return button
 }
 
-// Return button goes back to homepage (Overview)
 function returnHome() {
-    loadSection("overview");
+    returnBtn.style.display = "none"; // hide return button
+    loadSection("overview"); // load overview
 }
+
 
