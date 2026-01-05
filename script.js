@@ -14,13 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     window.toggleContact = toggleContact;
 
-    function fadeChange(html) {
-        content.classList.add("hide");
-        setTimeout(() => {
-            content.innerHTML = html;
-            content.classList.remove("hide");
-        }, 200);
-    }
+ function fadeChange(html, callback) {
+    content.classList.add("hide");
+    setTimeout(() => {
+        content.innerHTML = html;
+        content.classList.remove("hide");
+        if(callback) callback(); // run the function after content is updated
+    }, 200);
+}
 
     function loadSection(section) {
 
@@ -126,18 +127,19 @@ document.addEventListener("DOMContentLoaded", () => {
 function loadGameHub() {
     fadeChange(`
         <div class="game-hub">
-            <button>Flappy bird!</button>
-            <button>Snake game!</button>
-            <button>Dodge the blocks!</button>
+            <button onclick="loadFlappyBird()">Flappy bird!</button>
+            <button onclick="loadSnake()">Snake game!</button>
+            <button onclick="loadDodgeBlocks()">Dodge the blocks!</button>
         </div>
     `);
-    returnBtn.classList.add("show");
+    returnBtn.classList.add("show"); // show the return button
 }
 
 function returnHome() {
-    returnBtn.classList.remove("show");
-    loadSection("overview");
+    returnBtn.classList.remove("show"); // hide it
+    loadSection("overview"); // go back to overview text
 }
+
 
     window.returnHome = returnHome;
 
@@ -251,16 +253,14 @@ function startFlappyBird() {
 }
 
 function loadFlappyBird() {
-    // Clear previous game if any
-    content.innerHTML = `
+    fadeChange(`
         <div class="flappy-game-container">
             <canvas id="flappyCanvas" width="400" height="600"></canvas>
             <div class="score-display">Score: <span id="score">0</span></div>
-            <button class="return-btn" onclick="returnHome()">Return</button>
         </div>
-    `;
-    startFlappyBird();
+    `, startFlappyBird); // callback ensures the canvas exists first
 }
+
 
 
 
