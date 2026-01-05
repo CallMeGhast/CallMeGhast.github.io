@@ -251,6 +251,10 @@ main{
     filter: drop-shadow(0 0 8px var(--purple));
 }
 
+.return-btn.show {
+    display: block;
+}
+
 /* Headings */
 h2 {
     font-size: 22px;
@@ -260,6 +264,7 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
+
 
 
 
