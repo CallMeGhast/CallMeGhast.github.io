@@ -211,6 +211,52 @@ main{
     filter: drop-shadow(0 0 8px var(--purple));
 }
 
+/* BODY: allow scrolling via main */
+body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    /* remove height:100vh; remove overflow:hidden; */
+    margin:0;
+    padding:0;
+}
+
+/* MAIN: scroll container */
+main {
+    margin-top:70px;
+    padding: 40px;
+    max-width: 850px;
+    margin-inline: auto;
+    line-height: 1.7;
+    color: #ccc;
+    min-height: calc(100vh - 70px);
+    overflow-y: auto;
+}
+
+/* Custom dark scrollbar (Chrome, Edge) */
+main::-webkit-scrollbar {
+    width: 8px;
+}
+
+main::-webkit-scrollbar-track {
+    background: #111;
+}
+
+main::-webkit-scrollbar-thumb {
+    background: #6a00ff;
+    border-radius: 4px;
+}
+
+main::-webkit-scrollbar-thumb:hover {
+    background: #8f00ff;
+}
+
+/* Firefox scrollbar */
+main {
+    scrollbar-width: thin;
+    scrollbar-color: var(--purple) #111;
+}
+
 
 /* Headings */
 h2 {
@@ -221,6 +267,7 @@ h2 {
     font-weight: 500;
     text-shadow: 0 0 8px rgba(106,0,255,0.6);
 }
+
 
 
 
