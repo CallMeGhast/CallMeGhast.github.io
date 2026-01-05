@@ -119,21 +119,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.loadSection = loadSection;
 
-    function loadGameHub() {
-        fadeChange(`
-            <div class="game-hub">
-                <button id="flappyBtn">Flappy bird!</button>
-                <button id="snakeBtn">Snake game!</button>
-                <button id="dodgeBtn">Dodge the blocks!</button>
-            </div>
-        `, () => {
-            returnBtn.classList.add("show"); // show return button
+function loadGameHub() {
+    fadeChange(`
+        <div class="game-hub">
+            <button onclick="loadFlappyBird()">Flappy bird!</button>
+            <button onclick="loadSnake()">Snake game!</button>
+            <button onclick="loadDodgeBlocks()">Dodge the blocks!</button>
+        </div>
+    `);
+    returnBtn.classList.add("show"); // show the return button
+}
 
-            // Flappy Bird button now functional
-            document.getElementById("flappyBtn").addEventListener("click", loadFlappyBird);
-            // Snake and Dodge buttons can be added similarly
-            // document.getElementById("snakeBtn").addEventListener("click", loadSnake);
-            // document.getElementById("dodgeBtn").addEventListener("click", loadDodgeBlocks);
+
         });
     }
 
@@ -248,3 +245,4 @@ function loadFlappyBird() {
         </div>
     `, startFlappyBird); // callback ensures canvas exists first
 }
+
