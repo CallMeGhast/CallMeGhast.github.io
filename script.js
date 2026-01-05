@@ -253,14 +253,23 @@ function startFlappyBird() {
     loop();
 }
 
-// Load Flappy Bird
 function loadFlappyBird() {
-    fadeChange(`
+    // Remove previous game container if it exists
+    const existingGame = document.querySelector(".flappy-game-container");
+    if (existingGame) existingGame.remove();
+
+    // Put the game directly into #content
+    content.innerHTML = `
         <div class="flappy-game-container">
             <canvas id="flappyCanvas" width="400" height="600"></canvas>
             <div class="score-display">Score: <span id="score">0</span></div>
         </div>
-    `, startFlappyBird);
+    `;
 
+    // Show return button
     returnBtn.classList.add("show");
+
+    // Start the game after canvas exists
+    startFlappyBird();
 }
+
