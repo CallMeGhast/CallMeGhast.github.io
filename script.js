@@ -130,13 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button id="snakeBtn">Snake game!</button>
                 <button id="dodgeBtn">Dodge the blocks!</button>
             </div>
-        `, () => {
-            // Make buttons functional after content exists
-            document.getElementById("flappyBtn").addEventListener("click", loadFlappyBird);
-            // Placeholder for other games
-            // document.getElementById("snakeBtn").addEventListener("click", loadSnake);
-            // document.getElementById("dodgeBtn").addEventListener("click", loadDodgeBlocks);
-        });
+        `);
         returnBtn.classList.add("show"); // show return button
     }
 
@@ -156,6 +150,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Controller button opens Game Hub
     controllerBtn.addEventListener("click", loadGameHub);
+
+    // Event delegation for game buttons (works even if added later)
+    content.addEventListener("click", (e) => {
+        if (e.target.id === "flappyBtn") loadFlappyBird();
+        // if (e.target.id === "snakeBtn") loadSnake();
+        // if (e.target.id === "dodgeBtn") loadDodgeBlocks();
+    });
 
     // Initial section
     loadSection("overview");
