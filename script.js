@@ -124,7 +124,6 @@ function loadGameHub() {
         <div class="game-hub">
             <button>Flappy bird!</button>
             <button>Snake game!</button>
-            <button>Snake game!</button>
             <button>Dodge the blocks!</button>
         </div>
     `);
@@ -142,4 +141,5 @@ function returnHome() {
 
     loadSection("overview");
 });
+
 
