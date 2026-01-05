@@ -1,13 +1,10 @@
 const content = document.getElementById("content");
 const returnBtn = document.getElementById("returnBtn");
 const controllerBtn = document.querySelector(".controller-btn");
+const contactBox = document.getElementById("contactBox");
+
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    const content = document.getElementById("content");
-    const contactBox = document.getElementById("contactBox");
-    const returnBtn = document.getElementById("returnBtn");
-    const controllerBtn = document.querySelector(".controller-btn");
 
     function toggleContact() {
         contactBox.classList.toggle("open");
@@ -260,6 +257,7 @@ function loadFlappyBird() {
         </div>
     `, startFlappyBird); // callback ensures the canvas exists first
 }
+
 
 
 
