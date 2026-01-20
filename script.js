@@ -167,14 +167,14 @@ function startFlappyBird() {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Slower falling + easier control
+    // Easier physics
     let bird = { x: 80, y: 300, width: 30, height: 30, dy: 0 };
-    let gravity = 0.35;   // LOWER gravity = slower fall
-    let jump = -8;        // Slightly weaker jump for smoother control
+    let gravity = 0.25;   // slower fall
+    let jump = -7;        // smoother jump
 
     let pipes = [];
     let pipeWidth = 50;
-    let pipeGap = 150;
+    let pipeGap = 160;
     let frame = 0;
     let score = 0;
     let gameOver = false;
@@ -219,10 +219,12 @@ function startFlappyBird() {
         ctx.fillStyle = "var(--purple)";
         ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-        if (frame % 90 === 0) createPipe();
+        // Slower pipe spawn
+        if (frame % 110 === 0) createPipe();
+
         for (let i = 0; i < pipes.length; i++) {
             let p = pipes[i];
-            p.x -= 3;
+            p.x -= 2; // slower pipe movement
 
             ctx.fillStyle = "#444";
             ctx.fillRect(p.x, 0, pipeWidth, p.top);
