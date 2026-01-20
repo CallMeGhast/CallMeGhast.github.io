@@ -11,17 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     window.toggleContact = toggleContact;
 
-    // Fade change function for text sections
+    // Fade change function
     function fadeChange(html, callback) {
         content.classList.add("hide");
         setTimeout(() => {
             content.innerHTML = html;
             content.classList.remove("hide");
-            if (callback) callback(); // run after content is loaded
+            if (callback) callback();
         }, 200);
     }
 
-    // Load main text sections
+    // Load text sections
     function loadSection(section) {
         let html = "";
 
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>`;
         }
 
-        returnBtn.style.display = "none"; // hide return button for text sections
+        returnBtn.classList.remove("show");
         fadeChange(html);
     }
 
@@ -131,14 +131,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button id="dodgeBtn">Dodge the blocks!</button>
             </div>
         `);
-        returnBtn.classList.add("show"); // show return button
+        returnBtn.classList.add("show");
     }
 
     window.loadGameHub = loadGameHub;
 
     // Return Home
     function returnHome() {
-        // Remove any existing game container
         const existingGame = document.querySelector(".flappy-game-container");
         if (existingGame) existingGame.remove();
 
@@ -148,36 +147,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.returnHome = returnHome;
 
-    // Controller button opens Game Hub
     controllerBtn.addEventListener("click", loadGameHub);
 
-    // Event delegation for game buttons (works even if added later)
+    // Game button clicks
     content.addEventListener("click", (e) => {
         if (e.target.id === "flappyBtn") loadFlappyBird();
-        // if (e.target.id === "snakeBtn") loadSnake();
-        // if (e.target.id === "dodgeBtn") loadDodgeBlocks();
     });
 
-    // Initial section
     loadSection("overview");
 });
 
-// Flappy Bird game
+// ----------------------
+// FLAPPY BIRD GAME
+// ----------------------
+
 function startFlappyBird() {
     const canvas = document.getElementById("flappyCanvas");
     const ctx = canvas.getContext("2d");
     const width = canvas.width;
     const height = canvas.height;
 
+    // Slower falling + easier control
     let bird = { x: 80, y: 300, width: 30, height: 30, dy: 0 };
-    let gravity = 0.6;
-    let jump = -10;
+    let gravity = 0.35;   // LOWER gravity = slower fall
+    let jump = -8;        // Slightly weaker jump for smoother control
+
     let pipes = [];
     let pipeWidth = 50;
     let pipeGap = 150;
     let frame = 0;
     let score = 0;
     let gameOver = false;
+
+    const playAgainBtn = document.getElementById("playAgainBtn");
 
     function createPipe() {
         let topHeight = Math.floor(Math.random() * (height - pipeGap - 100)) + 50;
@@ -192,17 +194,21 @@ function startFlappyBird() {
         score = 0;
         gameOver = false;
         document.getElementById("score").innerText = score;
+        playAgainBtn.style.display = "none";
+        loop();
     }
 
     function flap() {
         if (!gameOver) bird.dy = jump;
-        else resetGame();
     }
 
     document.addEventListener("keydown", e => {
         if (e.code === "Space") flap();
     });
+
     canvas.addEventListener("click", flap);
+
+    playAgainBtn.addEventListener("click", resetGame);
 
     function loop() {
         ctx.clearRect(0, 0, width, height);
@@ -240,13 +246,11 @@ function startFlappyBird() {
         if (bird.y + bird.height > height || bird.y < 0) gameOver = true;
 
         frame++;
-        if (!gameOver) requestAnimationFrame(loop);
-        else {
-            ctx.fillStyle = "var(--white)";
-            ctx.font = "32px Inter";
-            ctx.fillText("Game Over", width / 2 - 80, height / 2);
-            ctx.font = "20px Inter";
-            ctx.fillText("Click or press Space to restart", width / 2 - 130, height / 2 + 30);
+
+        if (!gameOver) {
+            requestAnimationFrame(loop);
+        } else {
+            playAgainBtn.style.display = "block";
         }
     }
 
@@ -254,22 +258,52 @@ function startFlappyBird() {
 }
 
 function loadFlappyBird() {
-    // Remove previous game container if it exists
     const existingGame = document.querySelector(".flappy-game-container");
     if (existingGame) existingGame.remove();
 
-    // Put the game directly into #content
     content.innerHTML = `
         <div class="flappy-game-container">
             <canvas id="flappyCanvas" width="400" height="600"></canvas>
             <div class="score-display">Score: <span id="score">0</span></div>
+
+            <button id="playAgainBtn" 
+                style="
+                    position:absolute;
+                    top:50%;
+                    left:50%;
+                    transform:translate(-50%, -50%);
+                    padding:12px 20px;
+                    background:var(--purple);
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    font-size:18px;
+                    display:none;
+                    cursor:pointer;
+                ">
+                Play Again
+            </button>
+
+            <button id="returnFromGameBtn"
+                style="
+                    position:absolute;
+                    bottom:20px;
+                    left:20px;
+                    padding:10px 15px;
+                    background:#333;
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    cursor:pointer;
+                ">
+                Return
+            </button>
         </div>
     `;
 
-    // Show return button
+    document.getElementById("returnFromGameBtn").addEventListener("click", returnHome);
+
     returnBtn.classList.add("show");
 
-    // Start the game after canvas exists
     startFlappyBird();
 }
-
