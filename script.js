@@ -56,3 +56,256 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>`;
         }
 
+        if (section === "interests") {
+            html = `
+            <h2>Interessen</h2>
+            <p>
+            Mein Interesse an der Informationstechnologie entwickelte sich schon früh, da mich Computer und digitale Systeme
+            schon immer fasziniert haben. Besonders spannend finde ich es, wie aus Code funktionierende Programme und
+            Anwendungen entstehen.
+            <br><br>
+            Um erste praktische Erfahrungen zu sammeln, habe ich selbst kleine Projekte ausprobiert. Unter anderem habe ich
+            einmal versucht, ein eigenes Spiel mit der Programmiersprache Lua zu erstellen. Außerdem habe ich bereits einfache
+            Webseiten mit HTML und CSS umgesetzt. Diese Projekte haben mir gezeigt, wie vielseitig die IT ist und wie viel man
+            durch eigenes Ausprobieren lernen kann.
+            <br><br>
+            Ich arbeite gerne an Problemen und suche aktiv nach Lösungen, wenn etwas nicht auf Anhieb funktioniert. Mein Ziel
+            ist es, meine Kenntnisse kontinuierlich zu erweitern und meine Interessen in der IT weiter zu vertiefen.
+            </p>`;
+        }
+
+        if (section === "skills") {
+            html = `
+            <h2>Grundkenntnisse in Informationstechnologie</h2>
+            <p>
+            PC- & Windows-Kenntnisse<br>
+            Umgang mit Hardware<br>
+            Grundverständnis von Netzwerken<br>
+            Sicherer Umgang mit Internet & E-Mail<br>
+            Microsoft Office / Google Docs<br>
+            Grundkenntnisse im Umgang mit Software & Updates<br>
+            Schnelle Auffassungsgabe bei neuen Programmen<br>
+            Grundwissen im Aufbau von Programmiersprachen<br>
+            Erste Erfahrungen mit CSS, HTML, JavaScript
+            </p>
+
+            <h2>Sprachen</h2>
+            <p>
+            Deutsch – sehr gut<br>
+            Englisch – fließend<br>
+            Arabisch – fließend
+            </p>
+
+            <h2>Kommunikations-Skills</h2>
+            <p>
+            Freundlicher Umgang mit Kunden / Kollegen<br>
+            Erklären technischer Probleme in einfacher Sprache<br>
+            Hilfsbereitschaft
+            </p>
+
+            <h2>Persönliche Stärken</h2>
+            <p>
+            Problemlösungsorientiertes Denken<br>
+            Zuverlässigkeit & Pünktlichkeit<br>
+            Lernbereitschaft<br>
+            Selbstständiges Arbeiten<br>
+            Teamfähigkeit<br>
+            Geduld bei technischen Problemen<br>
+            Sorgfältige Arbeitsweise<br>
+            Verantwortungsbewusstsein
+            </p>`;
+        }
+
+        returnBtn.classList.remove("show");
+        fadeChange(html);
+    }
+
+    window.loadSection = loadSection;
+
+    // Game Hub
+    function loadGameHub() {
+        fadeChange(`
+            <div class="game-hub">
+                <button id="flappyBtn">Flappy bird!</button>
+                <button id="snakeBtn">Snake game!</button>
+                <button id="dodgeBtn">Dodge the blocks!</button>
+            </div>
+        `);
+        returnBtn.classList.add("show");
+    }
+
+    window.loadGameHub = loadGameHub;
+
+    // Return Home
+    function returnHome() {
+        const existingGame = document.querySelector(".flappy-game-container");
+        if (existingGame) existingGame.remove();
+
+        returnBtn.classList.remove("show");
+        loadSection("overview");
+    }
+
+    window.returnHome = returnHome;
+
+    controllerBtn.addEventListener("click", loadGameHub);
+
+    // Game button clicks
+    content.addEventListener("click", (e) => {
+        if (e.target.id === "flappyBtn") loadFlappyBird();
+    });
+
+    loadSection("overview");
+});
+
+// ----------------------
+// FLAPPY BIRD GAME
+// ----------------------
+
+function startFlappyBird() {
+    const canvas = document.getElementById("flappyCanvas");
+    const ctx = canvas.getContext("2d");
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Easier physics
+    let bird = { x: 80, y: 300, width: 30, height: 30, dy: 0 };
+    let gravity = 0.25;
+    let jump = -7;
+
+    let pipes = [];
+    let pipeWidth = 50;
+    let pipeGap = 160;
+    let frame = 0;
+    let score = 0;
+    let gameOver = false;
+
+    const playAgainBtn = document.getElementById("playAgainBtn");
+
+    function createPipe() {
+        let topHeight = Math.floor(Math.random() * (height - pipeGap - 100)) + 50;
+        pipes.push({ x: width, top: topHeight, bottom: topHeight + pipeGap });
+    }
+
+    function resetGame() {
+        bird.y = 300;
+        bird.dy = 0;
+        pipes = [];
+        frame = 0;
+        score = 0;
+        gameOver = false;
+        document.getElementById("score").innerText = score;
+        playAgainBtn.style.display = "none";
+        loop();
+    }
+
+    function flap() {
+        if (!gameOver) bird.dy = jump;
+    }
+
+    document.addEventListener("keydown", e => {
+        if (e.code === "Space") flap();
+    });
+
+    canvas.addEventListener("click", flap);
+
+    playAgainBtn.addEventListener("click", resetGame);
+
+    function loop() {
+        ctx.clearRect(0, 0, width, height);
+
+        bird.dy += gravity;
+        bird.y += bird.dy;
+
+        ctx.fillStyle = "var(--purple)";
+        ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+
+        if (frame % 110 === 0) createPipe();
+
+        for (let i = 0; i < pipes.length; i++) {
+            let p = pipes[i];
+            p.x -= 2;
+
+            ctx.fillStyle = "#444";
+            ctx.fillRect(p.x, 0, pipeWidth, p.top);
+            ctx.fillRect(p.x, p.bottom, pipeWidth, height - p.bottom);
+
+            if (
+                bird.x + bird.width > p.x &&
+                bird.x < p.x + pipeWidth &&
+                (bird.y < p.top || bird.y + bird.height > p.bottom)
+            ) {
+                gameOver = true;
+            }
+
+            if (!p.passed && p.x + pipeWidth < bird.x) {
+                score++;
+                p.passed = true;
+                document.getElementById("score").innerText = score;
+            }
+        }
+
+        if (bird.y + bird.height > height || bird.y < 0) gameOver = true;
+
+        frame++;
+
+        if (!gameOver) {
+            requestAnimationFrame(loop);
+        } else {
+            playAgainBtn.style.display = "block";
+        }
+    }
+
+    loop();
+}
+
+function loadFlappyBird() {
+    const existingGame = document.querySelector(".flappy-game-container");
+    if (existingGame) existingGame.remove();
+
+    // HIDE GLOBAL RETURN BUTTON
+    returnBtn.classList.remove("show");
+
+    content.innerHTML = `
+        <div class="flappy-game-container">
+            <canvas id="flappyCanvas" width="400" height="600"></canvas>
+            <div class="score-display">Score: <span id="score">0</span></div>
+
+            <button id="playAgainBtn" 
+                style="
+                    position:absolute;
+                    top:50%;
+                    left:50%;
+                    transform:translate(-50%, -50%);
+                    padding:12px 20px;
+                    background:var(--purple);
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    font-size:18px;
+                    display:none;
+                    cursor:pointer;
+                ">
+                Play Again
+            </button>
+
+            <button id="returnFromGameBtn"
+                style="
+                    position:absolute;
+                    bottom:20px;
+                    left:20px;
+                    padding:10px 15px;
+                    background:#333;
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    cursor:pointer;
+                ">
+                Return
+            </button>
+        </div>
+    `;
+
+    document.getElementById("returnFromGameBtn").addEventListener("click", returnHome);
+
+    startFlappyBird();
+}
