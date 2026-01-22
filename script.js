@@ -138,7 +138,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Return Home
     function returnHome() {
-        const existingGame = document.querySelector(".flappy-game-container, .snake-game-container");
+        const existingGame = document.querySelector(
+            ".flappy-game-container, .snake-game-container, .dodge-game-container"
+        );
         if (existingGame) existingGame.remove();
 
         returnBtn.classList.remove("show");
@@ -153,13 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
     content.addEventListener("click", (e) => {
         if (e.target.id === "flappyBtn") loadFlappyBird();
         if (e.target.id === "snakeBtn") loadSnakeGame();
+        if (e.target.id === "dodgeBtn") loadDodgeGame();
     });
 
     loadSection("overview");
 });
 
 // ----------------------
-// UPDATED FLAPPY BIRD GAME (EASIER VERSION)
+// FLAPPY BIRD GAME (easier version)
 // ----------------------
 
 function startFlappyBird() {
@@ -168,26 +171,20 @@ function startFlappyBird() {
     const width = canvas.width;
     const height = canvas.height;
 
-    // MUCH easier physics
     let bird = { x: 80, y: 300, width: 30, height: 30, dy: 0 };
-    let gravity = 0.15;   // slower fall
-    let jump = -6;        // smoother, easier jump
+    let gravity = 0.15;
+    let jump = -6;
 
     let pipes = [];
     let pipeWidth = 60;
-
-    // MUCH larger gap
     let pipeGap = 230;
 
     let frame = 0;
     let score = 0;
     let gameOver = false;
 
-    // Slower starting speed
     let pipeSpeed = 1.6;
     let spawnRate = 130;
-
-    // Difficulty scaling stays but is gentle
     let difficultyIncrease = 0.015;
 
     const playAgainBtn = document.getElementById("playAgainBtn");
@@ -231,28 +228,22 @@ function startFlappyBird() {
     function loop() {
         ctx.clearRect(0, 0, width, height);
 
-        // Bird physics
         bird.dy += gravity;
         bird.y += bird.dy;
 
-        // Draw bird (white)
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-        // Spawn pipes
         if (frame % spawnRate === 0) createPipe();
 
-        // Draw & update pipes
         for (let i = 0; i < pipes.length; i++) {
             let p = pipes[i];
             p.x -= pipeSpeed;
 
-            // Purple pillars
             ctx.fillStyle = "rgb(180, 0, 255)";
             ctx.fillRect(p.x, 0, pipeWidth, p.top);
             ctx.fillRect(p.x, p.bottom, pipeWidth, height - p.bottom);
 
-            // Collision
             if (
                 bird.x + bird.width > p.x &&
                 bird.x < p.x + pipeWidth &&
@@ -261,19 +252,16 @@ function startFlappyBird() {
                 gameOver = true;
             }
 
-            // Score
             if (!p.passed && p.x + pipeWidth < bird.x) {
                 score++;
                 p.passed = true;
                 scoreDisplay.innerText = score;
 
-                // Gentle difficulty increase
                 pipeSpeed += difficultyIncrease;
                 spawnRate = Math.max(90, spawnRate - 1);
             }
         }
 
-        // Ground / ceiling collision
         if (bird.y + bird.height > height || bird.y < 0) gameOver = true;
 
         frame++;
@@ -288,12 +276,12 @@ function startFlappyBird() {
     loop();
 }
 
-
 function loadFlappyBird() {
-    const existingGame = document.querySelector(".flappy-game-container, .snake-game-container");
+    const existingGame = document.querySelector(
+        ".flappy-game-container, .snake-game-container, .dodge-game-container"
+    );
     if (existingGame) existingGame.remove();
 
-    // hide global return button while in game
     returnBtn.classList.remove("show");
 
     content.innerHTML = `
@@ -344,7 +332,6 @@ function loadFlappyBird() {
     startFlappyBird();
 }
 
-
 // ----------------------
 // SNAKE GAME
 // ----------------------
@@ -363,8 +350,8 @@ function startSnakeGame() {
     let score = 0;
     let gameOver = false;
 
-    let speed = 150; // starting speed (ms per move)
-    const speedIncrease = 5; // speed up slightly each food eaten
+    let speed = 150;
+    const speedIncrease = 5;
 
     const playAgainBtn = document.getElementById("snakePlayAgainBtn");
     const scoreSpan = document.getElementById("snakeScore");
@@ -411,12 +398,10 @@ function startSnakeGame() {
     function update() {
         const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
-        // Wall collision
         if (head.x < 0 || head.x >= tiles || head.y < 0 || head.y >= tiles) {
             gameOver = true;
         }
 
-        // Self collision
         for (let i = 0; i < snake.length; i++) {
             if (head.x === snake[i].x && head.y === snake[i].y) {
                 gameOver = true;
@@ -427,19 +412,13 @@ function startSnakeGame() {
 
         snake.unshift(head);
 
-        // Food collision
         if (head.x === food.x && head.y === food.y) {
             score++;
             scoreSpan.textContent = score;
-
-            // Spawn new food
             food = spawnFood();
-
-            // Increase difficulty slightly
             speed = Math.max(50, speed - speedIncrease);
-
         } else {
-            snake.pop(); // normal movement
+            snake.pop();
         }
     }
 
@@ -447,11 +426,9 @@ function startSnakeGame() {
         ctx.fillStyle = "#111";
         ctx.fillRect(0, 0, size, size);
 
-        // Draw food (bright purple so it's visible)
         ctx.fillStyle = "rgb(180, 0, 255)";
         ctx.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
 
-        // Draw snake
         for (let i = 0; i < snake.length; i++) {
             ctx.fillStyle = i === 0 ? "#fff" : "#ccc";
             ctx.fillRect(snake[i].x * tileSize, snake[i].y * tileSize, tileSize, tileSize);
@@ -472,12 +449,12 @@ function startSnakeGame() {
     loop();
 }
 
-
 function loadSnakeGame() {
-    const existingGame = document.querySelector(".flappy-game-container, .snake-game-container");
+    const existingGame = document.querySelector(
+        ".flappy-game-container, .snake-game-container, .dodge-game-container"
+    );
     if (existingGame) existingGame.remove();
 
-    // hide global return button while in game
     returnBtn.classList.remove("show");
 
     content.innerHTML = `
@@ -527,5 +504,191 @@ function loadSnakeGame() {
     startSnakeGame();
 }
 
+// ----------------------
+// DODGE THE BLOCKS GAME
+// ----------------------
 
+function startDodgeGame() {
+    const canvas = document.getElementById("dodgeCanvas");
+    const ctx = canvas.getContext("2d");
+    const width = canvas.width;
+    const height = canvas.height;
 
+    const playerWidth = 40;
+    const playerHeight = 20;
+    let playerX = width / 2 - playerWidth / 2;
+    const playerY = height - 60;
+    const playerSpeed = 6;
+
+    let leftPressed = false;
+    let rightPressed = false;
+
+    let blocks = [];
+    let blockSpeed = 2;
+    let blockSpawnRate = 70;
+    let frame = 0;
+    let score = 0;
+    let gameOver = false;
+
+    const scoreSpan = document.getElementById("dodgeScore");
+    const playAgainBtn = document.getElementById("dodgePlayAgainBtn");
+
+    function spawnBlock() {
+        const blockWidth = 40 + Math.random() * 40; // 40–80
+        const x = Math.random() * (width - blockWidth);
+        blocks.push({
+            x,
+            y: -30,
+            width: blockWidth,
+            height: 20,
+            passed: false
+        });
+    }
+
+    function resetGame() {
+        playerX = width / 2 - playerWidth / 2;
+        blocks = [];
+        blockSpeed = 2;
+        blockSpawnRate = 70;
+        frame = 0;
+        score = 0;
+        gameOver = false;
+        scoreSpan.textContent = score;
+        playAgainBtn.style.display = "none";
+        loop();
+    }
+
+    function keyDown(e) {
+        if (e.code === "ArrowLeft" || e.code === "KeyA") leftPressed = true;
+        if (e.code === "ArrowRight" || e.code === "KeyD") rightPressed = true;
+    }
+
+    function keyUp(e) {
+        if (e.code === "ArrowLeft" || e.code === "KeyA") leftPressed = false;
+        if (e.code === "ArrowRight" || e.code === "KeyD") rightPressed = false;
+    }
+
+    document.addEventListener("keydown", keyDown);
+    document.addEventListener("keyup", keyUp);
+    playAgainBtn.addEventListener("click", resetGame);
+
+    function update() {
+        if (leftPressed) playerX -= playerSpeed;
+        if (rightPressed) playerX += playerSpeed;
+
+        if (playerX < 0) playerX = 0;
+        if (playerX + playerWidth > width) playerX = width - playerWidth;
+
+        if (frame % blockSpawnRate === 0) {
+            spawnBlock();
+        }
+
+        for (let i = 0; i < blocks.length; i++) {
+            const b = blocks[i];
+            b.y += blockSpeed;
+
+            if (
+                playerX < b.x + b.width &&
+                playerX + playerWidth > b.x &&
+                playerY < b.y + b.height &&
+                playerY + playerHeight > b.y
+            ) {
+                gameOver = true;
+            }
+
+            if (!b.passed && b.y > height) {
+                b.passed = true;
+                score++;
+                scoreSpan.textContent = score;
+
+                blockSpeed += 0.08;
+                blockSpawnRate = Math.max(35, blockSpawnRate - 1);
+            }
+        }
+
+        blocks = blocks.filter(b => b.y < height + 50);
+        frame++;
+    }
+
+    function draw() {
+        ctx.fillStyle = "#111";
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
+
+        ctx.fillStyle = "rgb(180, 0, 255)";
+        for (let i = 0; i < blocks.length; i++) {
+            const b = blocks[i];
+            ctx.fillRect(b.x, b.y, b.width, b.height);
+        }
+    }
+
+    function loop() {
+        if (gameOver) {
+            playAgainBtn.style.display = "block";
+            return;
+        }
+
+        update();
+        draw();
+        requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+function loadDodgeGame() {
+    const existingGame = document.querySelector(
+        ".flappy-game-container, .snake-game-container, .dodge-game-container"
+    );
+    if (existingGame) existingGame.remove();
+
+    returnBtn.classList.remove("show");
+
+    content.innerHTML = `
+        <div class="dodge-game-container" style="display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;height:100vh;background:#0f0f0f;overflow:hidden;">
+            <canvas id="dodgeCanvas" width="400" height="600" style="background:#111;border:2px solid var(--purple);border-radius:12px;display:block;"></canvas>
+            <div class="score-display" style="top:20px;">
+                Score: <span id="dodgeScore">0</span>
+            </div>
+
+            <button id="dodgePlayAgainBtn"
+                style="
+                    position:absolute;
+                    top:50%;
+                    left:50%;
+                    transform:translate(-50%, -50%);
+                    padding:12px 20px;
+                    background:var(--purple);
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    font-size:18px;
+                    display:none;
+                    cursor:pointer;
+                ">
+                Play Again
+            </button>
+
+            <button id="returnFromDodgeBtn"
+                style="
+                    position:absolute;
+                    bottom:20px;
+                    left:20px;
+                    padding:10px 15px;
+                    background:#333;
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    cursor:pointer;
+                ">
+                Return
+            </button>
+        </div>
+    `;
+
+    document.getElementById("returnFromDodgeBtn").addEventListener("click", returnHome);
+
+    startDodgeGame();
+}
