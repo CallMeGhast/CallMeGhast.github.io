@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ----------------------
-// FLAPPY BIRD GAME
+// UPDATED FLAPPY BIRD GAME
 // ----------------------
 
 function startFlappyBird() {
@@ -168,22 +168,34 @@ function startFlappyBird() {
     const width = canvas.width;
     const height = canvas.height;
 
+    // Easier physics + consistent style
     let bird = { x: 80, y: 300, width: 30, height: 30, dy: 0 };
-    let gravity = 0.25;
-    let jump = -7;
+    let gravity = 0.22;   // slower fall
+    let jump = -7;        // smooth jump
 
     let pipes = [];
-    let pipeWidth = 50;
-    let pipeGap = 160;
+    let pipeWidth = 60;
+    let pipeGap = 190;    // larger gap = easier
+
     let frame = 0;
     let score = 0;
     let gameOver = false;
 
+    let pipeSpeed = 2;        // starts slow
+    let spawnRate = 120;      // slower spawn
+    let difficultyIncrease = 0.02; // speed increase per score
+
     const playAgainBtn = document.getElementById("playAgainBtn");
+    const scoreDisplay = document.getElementById("score");
 
     function createPipe() {
-        let topHeight = Math.floor(Math.random() * (height - pipeGap - 100)) + 50;
-        pipes.push({ x: width, top: topHeight, bottom: topHeight + pipeGap });
+        let topHeight = Math.floor(Math.random() * (height - pipeGap - 120)) + 60;
+        pipes.push({
+            x: width,
+            top: topHeight,
+            bottom: topHeight + pipeGap,
+            passed: false
+        });
     }
 
     function resetGame() {
@@ -192,8 +204,10 @@ function startFlappyBird() {
         pipes = [];
         frame = 0;
         score = 0;
+        pipeSpeed = 2;
+        spawnRate = 120;
         gameOver = false;
-        document.getElementById("score").innerText = score;
+        scoreDisplay.innerText = score;
         playAgainBtn.style.display = "none";
         loop();
     }
@@ -207,28 +221,33 @@ function startFlappyBird() {
     });
 
     canvas.addEventListener("click", flap);
-
     playAgainBtn.addEventListener("click", resetGame);
 
     function loop() {
         ctx.clearRect(0, 0, width, height);
 
+        // Bird physics
         bird.dy += gravity;
         bird.y += bird.dy;
 
-        ctx.fillStyle = "var(--purple)";
+        // Draw bird (white)
+        ctx.fillStyle = "#ffffff";
         ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-        if (frame % 110 === 0) createPipe();
+        // Spawn pipes
+        if (frame % spawnRate === 0) createPipe();
 
+        // Draw & update pipes
         for (let i = 0; i < pipes.length; i++) {
             let p = pipes[i];
-            p.x -= 2;
+            p.x -= pipeSpeed;
 
-            ctx.fillStyle = "#444";
+            // Pillars purple
+            ctx.fillStyle = "rgb(180, 0, 255)";
             ctx.fillRect(p.x, 0, pipeWidth, p.top);
             ctx.fillRect(p.x, p.bottom, pipeWidth, height - p.bottom);
 
+            // Collision
             if (
                 bird.x + bird.width > p.x &&
                 bird.x < p.x + pipeWidth &&
@@ -237,13 +256,19 @@ function startFlappyBird() {
                 gameOver = true;
             }
 
+            // Score
             if (!p.passed && p.x + pipeWidth < bird.x) {
                 score++;
                 p.passed = true;
-                document.getElementById("score").innerText = score;
+                scoreDisplay.innerText = score;
+
+                // Difficulty increases
+                pipeSpeed += difficultyIncrease;
+                spawnRate = Math.max(80, spawnRate - 1);
             }
         }
 
+        // Ground / ceiling collision
         if (bird.y + bird.height > height || bird.y < 0) gameOver = true;
 
         frame++;
@@ -268,7 +293,10 @@ function loadFlappyBird() {
     content.innerHTML = `
         <div class="flappy-game-container">
             <canvas id="flappyCanvas" width="400" height="600"></canvas>
-            <div class="score-display">Score: <span id="score">0</span></div>
+
+            <div class="score-display">
+                Score: <span id="score">0</span>
+            </div>
 
             <button id="playAgainBtn" 
                 style="
@@ -309,6 +337,7 @@ function loadFlappyBird() {
 
     startFlappyBird();
 }
+
 
 // ----------------------
 // SNAKE GAME
@@ -491,4 +520,5 @@ function loadSnakeGame() {
 
     startSnakeGame();
 }
+
 
