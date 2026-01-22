@@ -505,7 +505,7 @@ function loadSnakeGame() {
 }
 
 // ----------------------
-// DODGE THE BLOCKS GAME
+// DODGE THE BLOCKS GAME (with shooting + energy bar)
 // ----------------------
 
 function startDodgeGame() {
@@ -518,7 +518,7 @@ function startDodgeGame() {
     const playerHeight = 20;
     let playerX = width / 2 - playerWidth / 2;
     const playerY = height - 60;
-    const playerSpeed = 6;
+    const playerSpeed = 10; // chunky, arcade-like
 
     let leftPressed = false;
     let rightPressed = false;
@@ -529,6 +529,18 @@ function startDodgeGame() {
     let frame = 0;
     let score = 0;
     let gameOver = false;
+
+    // Projectiles
+    let projectiles = [];
+    const projectileSpeed = 8;
+    let lastShotTime = 0;
+    const shotCooldown = 1000; // ms
+
+    // Energy bar
+    const maxEnergy = 4;
+    let energy = maxEnergy;
+    let energyRegenTimer = 0;
+    const energyRegenInterval = 90; // frames between +1 energy
 
     const scoreSpan = document.getElementById("dodgeScore");
     const playAgainBtn = document.getElementById("dodgePlayAgainBtn");
@@ -541,18 +553,23 @@ function startDodgeGame() {
             y: -30,
             width: blockWidth,
             height: 20,
-            passed: false
+            passed: false,
+            vanishing: false,
+            vanishTimer: 0
         });
     }
 
     function resetGame() {
         playerX = width / 2 - playerWidth / 2;
         blocks = [];
+        projectiles = [];
         blockSpeed = 2;
         blockSpawnRate = 70;
         frame = 0;
         score = 0;
         gameOver = false;
+        energy = maxEnergy;
+        energyRegenTimer = 0;
         scoreSpan.textContent = score;
         playAgainBtn.style.display = "none";
         loop();
@@ -568,26 +585,55 @@ function startDodgeGame() {
         if (e.code === "ArrowRight" || e.code === "KeyD") rightPressed = false;
     }
 
+    function shoot(e) {
+        const now = performance.now();
+        if (now - lastShotTime < shotCooldown) return;
+        if (energy <= 0) return;
+
+        lastShotTime = now;
+        energy = Math.max(0, energy - 1);
+
+        projectiles.push({
+            x: playerX + playerWidth / 2 - 3,
+            y: playerY - 10,
+            width: 6,
+            height: 14,
+            active: true
+        });
+    }
+
     document.addEventListener("keydown", keyDown);
     document.addEventListener("keyup", keyUp);
+    canvas.addEventListener("click", shoot);
     playAgainBtn.addEventListener("click", resetGame);
 
     function update() {
+        // Chunky movement
         if (leftPressed) playerX -= playerSpeed;
         if (rightPressed) playerX += playerSpeed;
 
+        // Clamp and snap to a rough grid for more arcade feel
         if (playerX < 0) playerX = 0;
         if (playerX + playerWidth > width) playerX = width - playerWidth;
+        playerX = Math.round(playerX / 4) * 4;
 
+        // Spawn blocks
         if (frame % blockSpawnRate === 0) {
             spawnBlock();
         }
 
+        // Update blocks
         for (let i = 0; i < blocks.length; i++) {
             const b = blocks[i];
-            b.y += blockSpeed;
 
-            if (
+            if (!b.vanishing) {
+                b.y += blockSpeed;
+            } else {
+                b.vanishTimer++;
+            }
+
+            // Collision with player (only if not vanishing)
+            if (!b.vanishing &&
                 playerX < b.x + b.width &&
                 playerX + playerWidth > b.x &&
                 playerY < b.y + b.height &&
@@ -596,32 +642,118 @@ function startDodgeGame() {
                 gameOver = true;
             }
 
+            // Score when block passes bottom
             if (!b.passed && b.y > height) {
                 b.passed = true;
                 score++;
                 scoreSpan.textContent = score;
 
+                // Increase difficulty
                 blockSpeed += 0.08;
                 blockSpawnRate = Math.max(35, blockSpawnRate - 1);
             }
         }
 
-        blocks = blocks.filter(b => b.y < height + 50);
+        // Update projectiles
+        for (let i = 0; i < projectiles.length; i++) {
+            const p = projectiles[i];
+            if (!p.active) continue;
+            p.y -= projectileSpeed;
+
+            // Remove if off-screen
+            if (p.y + p.height < 0) {
+                p.active = false;
+            }
+
+            // Check collision with blocks
+            for (let j = 0; j < blocks.length; j++) {
+                const b = blocks[j];
+                if (b.vanishing) continue;
+
+                if (
+                    p.x < b.x + b.width &&
+                    p.x + p.width > b.x &&
+                    p.y < b.y + b.height &&
+                    p.y + p.height > b.y
+                ) {
+                    // Hit
+                    p.active = false;
+                    b.vanishing = true;
+                    b.vanishTimer = 0;
+                    b.passed = true; // don't count as hit to player later
+                    score++;
+                    scoreSpan.textContent = score;
+
+                    // Slight reward: tiny energy regen on hit
+                    energy = Math.min(maxEnergy, energy + 0.25);
+                }
+            }
+        }
+
+        // Filter out inactive projectiles
+        projectiles = projectiles.filter(p => p.active);
+
+        // Remove blocks that finished vanishing or are far off-screen
+        blocks = blocks.filter(b => !(b.vanishing && b.vanishTimer > 15) && b.y < height + 80);
+
+        // Energy regen over time
+        energyRegenTimer++;
+        if (energyRegenTimer >= energyRegenInterval) {
+            energyRegenTimer = 0;
+            energy = Math.min(maxEnergy, energy + 1);
+        }
+
         frame++;
+    }
+
+    function drawEnergyBar() {
+        const barX = 20;
+        const barY = 20;
+        const barWidth = 18;
+        const barHeight = 10;
+        const gap = 6;
+
+        for (let i = 0; i < maxEnergy; i++) {
+            if (i < Math.floor(energy)) {
+                ctx.fillStyle = "rgb(180, 0, 255)";
+            } else {
+                ctx.fillStyle = "#333";
+            }
+            ctx.fillRect(barX + i * (barWidth + gap), barY, barWidth, barHeight);
+        }
     }
 
     function draw() {
         ctx.fillStyle = "#111";
         ctx.fillRect(0, 0, width, height);
 
+        // Player
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
 
-        ctx.fillStyle = "rgb(180, 0, 255)";
+        // Blocks
         for (let i = 0; i < blocks.length; i++) {
             const b = blocks[i];
+            let alpha = 1;
+            if (b.vanishing) {
+                alpha = Math.max(0, 1 - b.vanishTimer / 15);
+            }
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = "rgb(180, 0, 255)";
             ctx.fillRect(b.x, b.y, b.width, b.height);
+            ctx.restore();
         }
+
+        // Projectiles
+        ctx.fillStyle = "rgb(200, 120, 255)";
+        for (let i = 0; i < projectiles.length; i++) {
+            const p = projectiles[i];
+            ctx.fillRect(p.x, p.y, p.width, p.height);
+        }
+
+        // Energy bar
+        drawEnergyBar();
     }
 
     function loop() {
