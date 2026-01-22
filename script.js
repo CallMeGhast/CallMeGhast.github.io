@@ -505,7 +505,7 @@ function loadSnakeGame() {
 }
 
 // ----------------------
-// DODGE THE BLOCKS GAME (with shooting + energy bar)
+// DODGE THE BLOCKS GAME (updated with step movement, slower start, better energy)
 // ----------------------
 
 function startDodgeGame() {
@@ -514,18 +514,23 @@ function startDodgeGame() {
     const width = canvas.width;
     const height = canvas.height;
 
+    // Player
     const playerWidth = 40;
     const playerHeight = 20;
     let playerX = width / 2 - playerWidth / 2;
     const playerY = height - 60;
-    const playerSpeed = 10; // chunky, arcade-like
 
-    let leftPressed = false;
-    let rightPressed = false;
+    // STEP MOVEMENT (grid-like)
+    const stepSize = 20; // each key press moves exactly 20px
+    let leftHeld = false;
+    let rightHeld = false;
+    let stepRepeatTimer = 0;
+    const stepRepeatDelay = 6; // frames between repeated steps when holding key
 
+    // Blocks
     let blocks = [];
-    let blockSpeed = 2;
-    let blockSpawnRate = 70;
+    let blockSpeed = 1.4; // slower starting speed
+    let blockSpawnRate = 80; // slower spawn rate
     let frame = 0;
     let score = 0;
     let gameOver = false;
@@ -534,19 +539,18 @@ function startDodgeGame() {
     let projectiles = [];
     const projectileSpeed = 8;
     let lastShotTime = 0;
-    const shotCooldown = 1000; // ms
+    const shotCooldown = 250; // 0.25 seconds
 
     // Energy bar
     const maxEnergy = 4;
     let energy = maxEnergy;
-    let energyRegenTimer = 0;
-    const energyRegenInterval = 90; // frames between +1 energy
+    let energyFraction = 0; // stores fractional progress toward next bar
 
     const scoreSpan = document.getElementById("dodgeScore");
     const playAgainBtn = document.getElementById("dodgePlayAgainBtn");
 
     function spawnBlock() {
-        const blockWidth = 40 + Math.random() * 40; // 40–80
+        const blockWidth = 40 + Math.random() * 40;
         const x = Math.random() * (width - blockWidth);
         blocks.push({
             x,
@@ -563,35 +567,49 @@ function startDodgeGame() {
         playerX = width / 2 - playerWidth / 2;
         blocks = [];
         projectiles = [];
-        blockSpeed = 2;
-        blockSpawnRate = 70;
+        blockSpeed = 1.4;
+        blockSpawnRate = 80;
         frame = 0;
         score = 0;
         gameOver = false;
         energy = maxEnergy;
-        energyRegenTimer = 0;
+        energyFraction = 0;
         scoreSpan.textContent = score;
         playAgainBtn.style.display = "none";
         loop();
     }
 
+    // STEP MOVEMENT INPUT
     function keyDown(e) {
-        if (e.code === "ArrowLeft" || e.code === "KeyA") leftPressed = true;
-        if (e.code === "ArrowRight" || e.code === "KeyD") rightPressed = true;
+        if (e.code === "ArrowLeft" || e.code === "KeyA") {
+            leftHeld = true;
+            moveStep(-1);
+        }
+        if (e.code === "ArrowRight" || e.code === "KeyD") {
+            rightHeld = true;
+            moveStep(1);
+        }
     }
 
     function keyUp(e) {
-        if (e.code === "ArrowLeft" || e.code === "KeyA") leftPressed = false;
-        if (e.code === "ArrowRight" || e.code === "KeyD") rightPressed = false;
+        if (e.code === "ArrowLeft" || e.code === "KeyA") leftHeld = false;
+        if (e.code === "ArrowRight" || e.code === "KeyD") rightHeld = false;
     }
 
-    function shoot(e) {
+    function moveStep(direction) {
+        playerX += direction * stepSize;
+        if (playerX < 0) playerX = 0;
+        if (playerX + playerWidth > width) playerX = width - playerWidth;
+    }
+
+    // SHOOTING
+    function shoot() {
         const now = performance.now();
         if (now - lastShotTime < shotCooldown) return;
         if (energy <= 0) return;
 
         lastShotTime = now;
-        energy = Math.max(0, energy - 1);
+        energy -= 1;
 
         projectiles.push({
             x: playerX + playerWidth / 2 - 3,
@@ -608,14 +626,17 @@ function startDodgeGame() {
     playAgainBtn.addEventListener("click", resetGame);
 
     function update() {
-        // Chunky movement
-        if (leftPressed) playerX -= playerSpeed;
-        if (rightPressed) playerX += playerSpeed;
-
-        // Clamp and snap to a rough grid for more arcade feel
-        if (playerX < 0) playerX = 0;
-        if (playerX + playerWidth > width) playerX = width - playerWidth;
-        playerX = Math.round(playerX / 4) * 4;
+        // Handle held keys for repeated stepping
+        if (leftHeld || rightHeld) {
+            stepRepeatTimer++;
+            if (stepRepeatTimer >= stepRepeatDelay) {
+                stepRepeatTimer = 0;
+                if (leftHeld) moveStep(-1);
+                if (rightHeld) moveStep(1);
+            }
+        } else {
+            stepRepeatTimer = 0;
+        }
 
         // Spawn blocks
         if (frame % blockSpawnRate === 0) {
@@ -632,8 +653,9 @@ function startDodgeGame() {
                 b.vanishTimer++;
             }
 
-            // Collision with player (only if not vanishing)
-            if (!b.vanishing &&
+            // Collision with player
+            if (
+                !b.vanishing &&
                 playerX < b.x + b.width &&
                 playerX + playerWidth > b.x &&
                 playerY < b.y + b.height &&
@@ -642,15 +664,22 @@ function startDodgeGame() {
                 gameOver = true;
             }
 
-            // Score when block passes bottom
+            // Block passed bottom
             if (!b.passed && b.y > height) {
                 b.passed = true;
                 score++;
                 scoreSpan.textContent = score;
 
-                // Increase difficulty
-                blockSpeed += 0.08;
-                blockSpawnRate = Math.max(35, blockSpawnRate - 1);
+                // Difficulty increase
+                blockSpeed += 0.05;
+                blockSpawnRate = Math.max(40, blockSpawnRate - 1);
+
+                // ENERGY: +0.1 per block
+                energyFraction += 0.1;
+                if (energyFraction >= 1) {
+                    energyFraction -= 1;
+                    energy = Math.min(maxEnergy, energy + 1);
+                }
             }
         }
 
@@ -658,14 +687,11 @@ function startDodgeGame() {
         for (let i = 0; i < projectiles.length; i++) {
             const p = projectiles[i];
             if (!p.active) continue;
+
             p.y -= projectileSpeed;
+            if (p.y + p.height < 0) p.active = false;
 
-            // Remove if off-screen
-            if (p.y + p.height < 0) {
-                p.active = false;
-            }
-
-            // Check collision with blocks
+            // Collision with blocks
             for (let j = 0; j < blocks.length; j++) {
                 const b = blocks[j];
                 if (b.vanishing) continue;
@@ -676,32 +702,18 @@ function startDodgeGame() {
                     p.y < b.y + b.height &&
                     p.y + p.height > b.y
                 ) {
-                    // Hit
                     p.active = false;
                     b.vanishing = true;
                     b.vanishTimer = 0;
-                    b.passed = true; // don't count as hit to player later
+                    b.passed = true;
                     score++;
                     scoreSpan.textContent = score;
-
-                    // Slight reward: tiny energy regen on hit
-                    energy = Math.min(maxEnergy, energy + 0.25);
                 }
             }
         }
 
-        // Filter out inactive projectiles
         projectiles = projectiles.filter(p => p.active);
-
-        // Remove blocks that finished vanishing or are far off-screen
         blocks = blocks.filter(b => !(b.vanishing && b.vanishTimer > 15) && b.y < height + 80);
-
-        // Energy regen over time
-        energyRegenTimer++;
-        if (energyRegenTimer >= energyRegenInterval) {
-            energyRegenTimer = 0;
-            energy = Math.min(maxEnergy, energy + 1);
-        }
 
         frame++;
     }
@@ -714,7 +726,7 @@ function startDodgeGame() {
         const gap = 6;
 
         for (let i = 0; i < maxEnergy; i++) {
-            if (i < Math.floor(energy)) {
+            if (i < energy) {
                 ctx.fillStyle = "rgb(180, 0, 255)";
             } else {
                 ctx.fillStyle = "#333";
@@ -734,10 +746,8 @@ function startDodgeGame() {
         // Blocks
         for (let i = 0; i < blocks.length; i++) {
             const b = blocks[i];
-            let alpha = 1;
-            if (b.vanishing) {
-                alpha = Math.max(0, 1 - b.vanishTimer / 15);
-            }
+            let alpha = b.vanishing ? Math.max(0, 1 - b.vanishTimer / 15) : 1;
+
             ctx.save();
             ctx.globalAlpha = alpha;
             ctx.fillStyle = "rgb(180, 0, 255)";
@@ -752,7 +762,6 @@ function startDodgeGame() {
             ctx.fillRect(p.x, p.y, p.width, p.height);
         }
 
-        // Energy bar
         drawEnergyBar();
     }
 
@@ -824,3 +833,5 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
+
