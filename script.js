@@ -546,273 +546,275 @@ function startDodgeGame() {
     let playerX = width / 2 - playerWidth / 2;
     const playerY = height - 60;
 
+    const stepSize = 20; // <-- needed for moveStep
+
     let leftHeld = false;
-let rightHeld = false;
-let stepRepeatTimer = 0;
-const stepRepeatDelay = 6;
+    let rightHeld = false;
+    let stepRepeatTimer = 0;
+    const stepRepeatDelay = 6;
 
-// Blocks
-let blocks = [];
-let blockSpeed = 1.4;
-let blockSpawnRate = 80;
-let frame = 0;
-let score = 0;
-let gameOver = false;
+    // Blocks
+    let blocks = [];
+    let blockSpeed = 1.4;
+    let blockSpawnRate = 80;
+    let frame = 0;
+    let score = 0;
+    let gameOver = false;
 
-// Projectiles
-let projectiles = [];
-const projectileSpeed = 8;
-let lastShotTime = 0;
-const shotCooldown = 250; // 0.25 seconds
+    // Projectiles
+    let projectiles = [];
+    const projectileSpeed = 8;
+    let lastShotTime = 0;
+    const shotCooldown = 250; // 0.25 seconds
 
-// Energy bar
-const maxEnergy = 4;
-let energy = maxEnergy;
-let energyFraction = 0;
+    // Energy bar
+    const maxEnergy = 4;
+    let energy = maxEnergy;
+    let energyFraction = 0;
 
-// Highscore
-let highscore = Number(localStorage.getItem("dodgeHighscore")) || 0;
-document.getElementById("dodgeHigh").innerText = highscore;
+    // Highscore
+    let highscore = Number(localStorage.getItem("dodgeHighscore")) || 0;
+    document.getElementById("dodgeHigh").innerText = highscore;
 
-const scoreSpan = document.getElementById("dodgeScore");
-const playAgainBtn = document.getElementById("dodgePlayAgainBtn");
+    const scoreSpan = document.getElementById("dodgeScore");
+    const playAgainBtn = document.getElementById("dodgePlayAgainBtn");
 
-function spawnBlock() {
-    const blockWidth = 40 + Math.random() * 40;
-    const x = Math.random() * (width - blockWidth);
-    blocks.push({
-        x,
-        y: -30,
-        width: blockWidth,
-        height: 20,
-        passed: false,
-        vanishing: false,
-        vanishTimer: 0
-    });
-}
-
-function resetGame() {
-    playerX = width / 2 - playerWidth / 2;
-    blocks = [];
-    projectiles = [];
-    blockSpeed = 1.4;
-    blockSpawnRate = 80;
-    frame = 0;
-    score = 0;
-    gameOver = false;
-    energy = maxEnergy;
-    energyFraction = 0;
-    scoreSpan.textContent = score;
-    playAgainBtn.style.display = "none";
-    loop();
-}
-
-// STEP MOVEMENT
-function keyDown(e) {
-    if (e.code === "ArrowLeft" || e.code === "KeyA") {
-        leftHeld = true;
-        moveStep(-1);
+    function spawnBlock() {
+        const blockWidth = 40 + Math.random() * 40;
+        const x = Math.random() * (width - blockWidth);
+        blocks.push({
+            x,
+            y: -30,
+            width: blockWidth,
+            height: 20,
+            passed: false,
+            vanishing: false,
+            vanishTimer: 0
+        });
     }
-    if (e.code === "ArrowRight" || e.code === "KeyD") {
-        rightHeld = true;
-        moveStep(1);
+
+    function resetGame() {
+        playerX = width / 2 - playerWidth / 2;
+        blocks = [];
+        projectiles = [];
+        blockSpeed = 1.4;
+        blockSpawnRate = 80;
+        frame = 0;
+        score = 0;
+        gameOver = false;
+        energy = maxEnergy;
+        energyFraction = 0;
+        scoreSpan.textContent = score;
+        playAgainBtn.style.display = "none";
+        loop();
     }
-}
 
-function keyUp(e) {
-    if (e.code === "ArrowLeft" || e.code === "KeyA") leftHeld = false;
-    if (e.code === "ArrowRight" || e.code === "KeyD") rightHeld = false;
-}
-
-function moveStep(direction) {
-    playerX += direction * stepSize;
-    if (playerX < 0) playerX = 0;
-    if (playerX + playerWidth > width) playerX = width - playerWidth;
-}
-
-// SHOOTING
-function shoot() {
-    const now = performance.now();
-    if (now - lastShotTime < shotCooldown) return;
-    if (energy <= 0) return;
-
-    lastShotTime = now;
-    energy -= 1;
-
-    projectiles.push({
-        x: playerX + playerWidth / 2 - 3,
-        y: playerY - 10,
-        width: 6,
-        height: 14,
-        active: true
-    });
-}
-
-document.addEventListener("keydown", keyDown);
-document.addEventListener("keyup", keyUp);
-canvas.addEventListener("click", shoot);
-playAgainBtn.addEventListener("click", resetGame);
-
-function update() {
-    // Step movement hold-repeat
-    if (leftHeld || rightHeld) {
-        stepRepeatTimer++;
-        if (stepRepeatTimer >= stepRepeatDelay) {
-            stepRepeatTimer = 0;
-            if (leftHeld) moveStep(-1);
-            if (rightHeld) moveStep(1);
+    // STEP MOVEMENT
+    function keyDown(e) {
+        if (e.code === "ArrowLeft" || e.code === "KeyA") {
+            leftHeld = true;
+            moveStep(-1);
         }
-    } else {
-        stepRepeatTimer = 0;
+        if (e.code === "ArrowRight" || e.code === "KeyD") {
+            rightHeld = true;
+            moveStep(1);
+        }
     }
 
-    // Spawn blocks
-    if (frame % blockSpawnRate === 0) spawnBlock();
+    function keyUp(e) {
+        if (e.code === "ArrowLeft" || e.code === "KeyA") leftHeld = false;
+        if (e.code === "ArrowRight" || e.code === "KeyD") rightHeld = false;
+    }
 
-    // Update blocks
-    for (let i = 0; i < blocks.length; i++) {
-        const b = blocks[i];
+    function moveStep(direction) {
+        playerX += direction * stepSize;
+        if (playerX < 0) playerX = 0;
+        if (playerX + playerWidth > width) playerX = width - playerWidth;
+    }
 
-        if (!b.vanishing) {
-            b.y += blockSpeed;
+    // SHOOTING
+    function shoot() {
+        const now = performance.now();
+        if (now - lastShotTime < shotCooldown) return;
+        if (energy <= 0) return;
+
+        lastShotTime = now;
+        energy -= 1;
+
+        projectiles.push({
+            x: playerX + playerWidth / 2 - 3,
+            y: playerY - 10,
+            width: 6,
+            height: 14,
+            active: true
+        });
+    }
+
+    document.addEventListener("keydown", keyDown);
+    document.addEventListener("keyup", keyUp);
+    canvas.addEventListener("click", shoot);
+    playAgainBtn.addEventListener("click", resetGame);
+
+    function update() {
+        // Step movement hold-repeat
+        if (leftHeld || rightHeld) {
+            stepRepeatTimer++;
+            if (stepRepeatTimer >= stepRepeatDelay) {
+                stepRepeatTimer = 0;
+                if (leftHeld) moveStep(-1);
+                if (rightHeld) moveStep(1);
+            }
         } else {
-            b.vanishTimer++;
+            stepRepeatTimer = 0;
         }
 
-        // Collision with player
-        if (
-            !b.vanishing &&
-            playerX < b.x + b.width &&
-            playerX + playerWidth > b.x &&
-            playerY < b.y + b.height &&
-            playerY + playerHeight > b.y
-        ) {
-            gameOver = true;
-        }
+        // Spawn blocks
+        if (frame % blockSpawnRate === 0) spawnBlock();
 
-        // Passed bottom
-        if (!b.passed && b.y > height) {
-            b.passed = true;
-            score++;
-            scoreSpan.textContent = score;
+        // Update blocks
+        for (let i = 0; i < blocks.length; i++) {
+            const b = blocks[i];
 
-            // Update highscore
-            if (score > highscore) {
-                highscore = score;
-                localStorage.setItem("dodgeHighscore", highscore);
-                document.getElementById("dodgeHigh").innerText = highscore;
+            if (!b.vanishing) {
+                b.y += blockSpeed;
+            } else {
+                b.vanishTimer++;
             }
 
-            // Difficulty increase
-            blockSpeed += 0.05;
-            blockSpawnRate = Math.max(40, blockSpawnRate - 1);
-
-            // Energy gain (0.1 per block)
-            energyFraction += 0.1;
-            if (energyFraction >= 1) {
-                energyFraction -= 1;
-                energy = Math.min(maxEnergy, energy + 1);
-            }
-        }
-    }
-
-    // Update projectiles
-    for (let i = 0; i < projectiles.length; i++) {
-        const p = projectiles[i];
-        if (!p.active) continue;
-
-        p.y -= projectileSpeed;
-        if (p.y + p.height < 0) p.active = false;
-
-        // Collision with blocks
-        for (let j = 0; j < blocks.length; j++) {
-            const b = blocks[j];
-            if (b.vanishing) continue;
-
+            // Collision with player
             if (
-                p.x < b.x + b.width &&
-                p.x + p.width > b.x &&
-                p.y < b.y + b.height &&
-                p.y + p.height > b.y
+                !b.vanishing &&
+                playerX < b.x + b.width &&
+                playerX + playerWidth > b.x &&
+                playerY < b.y + b.height &&
+                playerY + playerHeight > b.y
             ) {
-                p.active = false;
-                b.vanishing = true;
-                b.vanishTimer = 0;
-                b.passed = true;
+                gameOver = true;
+            }
 
+            // Passed bottom
+            if (!b.passed && b.y > height) {
+                b.passed = true;
                 score++;
                 scoreSpan.textContent = score;
 
+                // Update highscore
                 if (score > highscore) {
                     highscore = score;
                     localStorage.setItem("dodgeHighscore", highscore);
                     document.getElementById("dodgeHigh").innerText = highscore;
                 }
+
+                // Difficulty increase
+                blockSpeed += 0.05;
+                blockSpawnRate = Math.max(40, blockSpawnRate - 1);
+
+                // Energy gain (0.1 per block)
+                energyFraction += 0.1;
+                if (energyFraction >= 1) {
+                    energyFraction -= 1;
+                    energy = Math.min(maxEnergy, energy + 1);
+                }
             }
+        }
+
+        // Update projectiles
+        for (let i = 0; i < projectiles.length; i++) {
+            const p = projectiles[i];
+            if (!p.active) continue;
+
+            p.y -= projectileSpeed;
+            if (p.y + p.height < 0) p.active = false;
+
+            // Collision with blocks
+            for (let j = 0; j < blocks.length; j++) {
+                const b = blocks[j];
+                if (b.vanishing) continue;
+
+                if (
+                    p.x < b.x + b.width &&
+                    p.x + p.width > b.x &&
+                    p.y < b.y + b.height &&
+                    p.y + p.height > b.y
+                ) {
+                    p.active = false;
+                    b.vanishing = true;
+                    b.vanishTimer = 0;
+                    b.passed = true;
+
+                    score++;
+                    scoreSpan.textContent = score;
+
+                    if (score > highscore) {
+                        highscore = score;
+                        localStorage.setItem("dodgeHighscore", highscore);
+                        document.getElementById("dodgeHigh").innerText = highscore;
+                    }
+                }
+            }
+        }
+
+        projectiles = projectiles.filter(p => p.active);
+        blocks = blocks.filter(b => !(b.vanishing && b.vanishTimer > 15) && b.y < height + 80);
+
+        frame++;
+    }
+
+    function drawEnergyBar() {
+        const barX = 20;
+        const barY = 20;
+        const barWidth = 18;
+        const barHeight = 10;
+        const gap = 6;
+
+        for (let i = 0; i < maxEnergy; i++) {
+            ctx.fillStyle = i < energy ? "rgb(180, 0, 255)" : "#333";
+            ctx.fillRect(barX + i * (barWidth + gap), barY, barWidth, barHeight);
         }
     }
 
-    projectiles = projectiles.filter(p => p.active);
-    blocks = blocks.filter(b => !(b.vanishing && b.vanishTimer > 15) && b.y < height + 80);
+    function draw() {
+        ctx.fillStyle = "#111";
+        ctx.fillRect(0, 0, width, height);
 
-    frame++;
-}
+        // Player
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
 
-function drawEnergyBar() {
-    const barX = 20;
-    const barY = 20;
-    const barWidth = 18;
-    const barHeight = 10;
-    const gap = 6;
+        // Blocks
+        for (let i = 0; i < blocks.length; i++) {
+            const b = blocks[i];
+            let alpha = b.vanishing ? Math.max(0, 1 - b.vanishTimer / 15) : 1;
 
-    for (let i = 0; i < maxEnergy; i++) {
-        ctx.fillStyle = i < energy ? "rgb(180, 0, 255)" : "#333";
-        ctx.fillRect(barX + i * (barWidth + gap), barY, barWidth, barHeight);
-    }
-}
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = "rgb(180, 0, 255)";
+            ctx.fillRect(b.x, b.y, b.width, b.height);
+            ctx.restore();
+        }
 
-function draw() {
-    ctx.fillStyle = "#111";
-    ctx.fillRect(0, 0, width, height);
+        // Projectiles
+        ctx.fillStyle = "rgb(200, 120, 255)";
+        for (let i = 0; i < projectiles.length; i++) {
+            const p = projectiles[i];
+            ctx.fillRect(p.x, p.y, p.width, p.height);
+        }
 
-    // Player
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
-
-    // Blocks
-    for (let i = 0; i < blocks.length; i++) {
-        const b = blocks[i];
-        let alpha = b.vanishing ? Math.max(0, 1 - b.vanishTimer / 15) : 1;
-
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = "rgb(180, 0, 255)";
-        ctx.fillRect(b.x, b.y, b.width, b.height);
-        ctx.restore();
+        drawEnergyBar();
     }
 
-    // Projectiles
-    ctx.fillStyle = "rgb(200, 120, 255)";
-    for (let i = 0; i < projectiles.length; i++) {
-        const p = projectiles[i];
-        ctx.fillRect(p.x, p.y, p.width, p.height);
+    function loop() {
+        if (gameOver) {
+            playAgainBtn.style.display = "block";
+            return;
+        }
+
+        update();
+        draw();
+        requestAnimationFrame(loop);
     }
 
-    drawEnergyBar();
-}
-
-function loop() {
-    if (gameOver) {
-        playAgainBtn.style.display = "block";
-        return;
-    }
-
-    update();
-    draw();
-    requestAnimationFrame(loop);
-}
-
-loop();
+    loop();
 }
 
 function loadDodgeGame() {
@@ -874,4 +876,5 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
