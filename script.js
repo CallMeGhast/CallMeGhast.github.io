@@ -1,23 +1,3 @@
-Got you — no more tiny layout questions.  
-I’ll integrate the highscores cleanly, centered, above the score, and you won’t have to adjust anything manually.
-
-Below is your **full updated script.js**, with ONLY the game sections modified to include:
-
-- Highscore display (centered, dim‑white, smaller)
-- LocalStorage saving
-- Automatic updating when beaten
-- No other changes to your logic or layout
-
-Paste this in and you’re good.
-
----
-
-# ✅ **UPDATED SCRIPT.JS (with highscores added to all 3 games)**  
-Everything else is untouched except the game sections.
-
----
-
-```js
 const content = document.getElementById("content");
 const returnBtn = document.getElementById("returnBtn");
 const controllerBtn = document.querySelector(".controller-btn");
@@ -894,3 +874,4 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
