@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Return Home
     function returnHome() {
-        const existingGame = document.querySelector(".flappy-game-container");
+        const existingGame = document.querySelector(".flappy-game-container, .snake-game-container");
         if (existingGame) existingGame.remove();
 
         returnBtn.classList.remove("show");
@@ -152,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Game button clicks
     content.addEventListener("click", (e) => {
         if (e.target.id === "flappyBtn") loadFlappyBird();
+        if (e.target.id === "snakeBtn") loadSnakeGame();
     });
 
     loadSection("overview");
@@ -167,7 +168,6 @@ function startFlappyBird() {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Easier physics
     let bird = { x: 80, y: 300, width: 30, height: 30, dy: 0 };
     let gravity = 0.25;
     let jump = -7;
@@ -259,10 +259,10 @@ function startFlappyBird() {
 }
 
 function loadFlappyBird() {
-    const existingGame = document.querySelector(".flappy-game-container");
+    const existingGame = document.querySelector(".flappy-game-container, .snake-game-container");
     if (existingGame) existingGame.remove();
 
-    // HIDE GLOBAL RETURN BUTTON
+    // hide global return button while in game
     returnBtn.classList.remove("show");
 
     content.innerHTML = `
@@ -308,4 +308,176 @@ function loadFlappyBird() {
     document.getElementById("returnFromGameBtn").addEventListener("click", returnHome);
 
     startFlappyBird();
+}
+
+// ----------------------
+// SNAKE GAME
+// ----------------------
+
+function startSnakeGame() {
+    const canvas = document.getElementById("snakeCanvas");
+    const ctx = canvas.getContext("2d");
+    const size = 400;
+    const tileSize = 20;
+    const tiles = size / tileSize;
+
+    let snake = [{ x: 10, y: 10 }];
+    let dx = 1;
+    let dy = 0;
+    let food = spawnFood();
+    let score = 0;
+    let gameOver = false;
+    let speed = 120; // ms per move
+
+    const playAgainBtn = document.getElementById("snakePlayAgainBtn");
+    const scoreSpan = document.getElementById("snakeScore");
+
+    function spawnFood() {
+        return {
+            x: Math.floor(Math.random() * tiles),
+            y: Math.floor(Math.random() * tiles)
+        };
+    }
+
+    function resetGame() {
+        snake = [{ x: 10, y: 10 }];
+        dx = 1;
+        dy = 0;
+        food = spawnFood();
+        score = 0;
+        gameOver = false;
+        scoreSpan.textContent = score;
+        playAgainBtn.style.display = "none";
+        loop();
+    }
+
+    function changeDirection(e) {
+        if (e.code === "ArrowUp" || e.code === "KeyW") {
+            if (dy === 1) return;
+            dx = 0; dy = -1;
+        } else if (e.code === "ArrowDown" || e.code === "KeyS") {
+            if (dy === -1) return;
+            dx = 0; dy = 1;
+        } else if (e.code === "ArrowLeft" || e.code === "KeyA") {
+            if (dx === 1) return;
+            dx = -1; dy = 0;
+        } else if (e.code === "ArrowRight" || e.code === "KeyD") {
+            if (dx === -1) return;
+            dx = 1; dy = 0;
+        }
+    }
+
+    document.addEventListener("keydown", changeDirection);
+    playAgainBtn.addEventListener("click", resetGame);
+
+    function update() {
+        const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+        // Wall collision
+        if (head.x < 0 || head.x >= tiles || head.y < 0 || head.y >= tiles) {
+            gameOver = true;
+        }
+
+        // Self collision
+        for (let i = 0; i < snake.length; i++) {
+            if (head.x === snake[i].x && head.y === snake[i].y) {
+                gameOver = true;
+            }
+        }
+
+        if (gameOver) return;
+
+        snake.unshift(head);
+
+        // Food
+        if (head.x === food.x && head.y === food.y) {
+            score++;
+            scoreSpan.textContent = score;
+            food = spawnFood();
+        } else {
+            snake.pop();
+        }
+    }
+
+    function draw() {
+        ctx.fillStyle = "#111";
+        ctx.fillRect(0, 0, size, size);
+
+        // Food
+        ctx.fillStyle = "var(--purple)";
+        ctx.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
+
+        // Snake
+        for (let i = 0; i < snake.length; i++) {
+            ctx.fillStyle = i === 0 ? "#fff" : "#ccc";
+            ctx.fillRect(snake[i].x * tileSize, snake[i].y * tileSize, tileSize, tileSize);
+        }
+    }
+
+    function loop() {
+        if (gameOver) {
+            playAgainBtn.style.display = "block";
+            return;
+        }
+
+        update();
+        draw();
+        setTimeout(loop, speed);
+    }
+
+    loop();
+}
+
+function loadSnakeGame() {
+    const existingGame = document.querySelector(".flappy-game-container, .snake-game-container");
+    if (existingGame) existingGame.remove();
+
+    // hide global return button while in game
+    returnBtn.classList.remove("show");
+
+    content.innerHTML = `
+        <div class="snake-game-container" style="display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;height:100vh;background:#0f0f0f;overflow:hidden;">
+            <canvas id="snakeCanvas" width="400" height="400" style="background:#111;border:2px solid var(--purple);border-radius:12px;display:block;"></canvas>
+            <div class="score-display" style="top:20px;">
+                Score: <span id="snakeScore">0</span>
+            </div>
+
+            <button id="snakePlayAgainBtn"
+                style="
+                    position:absolute;
+                    top:50%;
+                    left:50%;
+                    transform:translate(-50%, -50%);
+                    padding:12px 20px;
+                    background:var(--purple);
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    font-size:18px;
+                    display:none;
+                    cursor:pointer;
+                ">
+                Play Again
+            </button>
+
+            <button id="returnFromSnakeBtn"
+                style="
+                    position:absolute;
+                    bottom:20px;
+                    left:20px;
+                    padding:10px 15px;
+                    background:#333;
+                    color:white;
+                    border:none;
+                    border-radius:8px;
+                    cursor:pointer;
+                ">
+                Return
+            </button>
+        </div>
+    `;
+
+    document.getElementById("returnFromSnakeBtn").addEventListener("click", returnHome);
+
+    startSnakeGame();
 }
