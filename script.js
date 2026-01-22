@@ -327,7 +327,9 @@ function startSnakeGame() {
     let food = spawnFood();
     let score = 0;
     let gameOver = false;
-    let speed = 120; // ms per move
+
+    let speed = 150; // starting speed (ms per move)
+    const speedIncrease = 5; // speed up slightly each food eaten
 
     const playAgainBtn = document.getElementById("snakePlayAgainBtn");
     const scoreSpan = document.getElementById("snakeScore");
@@ -346,6 +348,7 @@ function startSnakeGame() {
         food = spawnFood();
         score = 0;
         gameOver = false;
+        speed = 150;
         scoreSpan.textContent = score;
         playAgainBtn.style.display = "none";
         loop();
@@ -389,13 +392,19 @@ function startSnakeGame() {
 
         snake.unshift(head);
 
-        // Food
+        // Food collision
         if (head.x === food.x && head.y === food.y) {
             score++;
             scoreSpan.textContent = score;
+
+            // Spawn new food
             food = spawnFood();
+
+            // Increase difficulty slightly
+            speed = Math.max(50, speed - speedIncrease);
+
         } else {
-            snake.pop();
+            snake.pop(); // normal movement
         }
     }
 
@@ -403,11 +412,11 @@ function startSnakeGame() {
         ctx.fillStyle = "#111";
         ctx.fillRect(0, 0, size, size);
 
-        // Food
-        ctx.fillStyle = "var(--purple)";
+        // Draw food (bright purple so it's visible)
+        ctx.fillStyle = "rgb(180, 0, 255)";
         ctx.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
 
-        // Snake
+        // Draw snake
         for (let i = 0; i < snake.length; i++) {
             ctx.fillStyle = i === 0 ? "#fff" : "#ccc";
             ctx.fillRect(snake[i].x * tileSize, snake[i].y * tileSize, tileSize, tileSize);
@@ -427,6 +436,7 @@ function startSnakeGame() {
 
     loop();
 }
+
 
 function loadSnakeGame() {
     const existingGame = document.querySelector(".flappy-game-container, .snake-game-container");
@@ -481,3 +491,4 @@ function loadSnakeGame() {
 
     startSnakeGame();
 }
+
