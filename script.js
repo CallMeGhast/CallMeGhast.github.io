@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ----------------------
-// UPDATED FLAPPY BIRD GAME
+// UPDATED FLAPPY BIRD GAME (EASIER VERSION)
 // ----------------------
 
 function startFlappyBird() {
@@ -168,28 +168,33 @@ function startFlappyBird() {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Easier physics + consistent style
+    // MUCH easier physics
     let bird = { x: 80, y: 300, width: 30, height: 30, dy: 0 };
-    let gravity = 0.22;   // slower fall
-    let jump = -7;        // smooth jump
+    let gravity = 0.15;   // slower fall
+    let jump = -6;        // smoother, easier jump
 
     let pipes = [];
     let pipeWidth = 60;
-    let pipeGap = 190;    // larger gap = easier
+
+    // MUCH larger gap
+    let pipeGap = 230;
 
     let frame = 0;
     let score = 0;
     let gameOver = false;
 
-    let pipeSpeed = 2;        // starts slow
-    let spawnRate = 120;      // slower spawn
-    let difficultyIncrease = 0.02; // speed increase per score
+    // Slower starting speed
+    let pipeSpeed = 1.6;
+    let spawnRate = 130;
+
+    // Difficulty scaling stays but is gentle
+    let difficultyIncrease = 0.015;
 
     const playAgainBtn = document.getElementById("playAgainBtn");
     const scoreDisplay = document.getElementById("score");
 
     function createPipe() {
-        let topHeight = Math.floor(Math.random() * (height - pipeGap - 120)) + 60;
+        let topHeight = Math.floor(Math.random() * (height - pipeGap - 140)) + 70;
         pipes.push({
             x: width,
             top: topHeight,
@@ -204,8 +209,8 @@ function startFlappyBird() {
         pipes = [];
         frame = 0;
         score = 0;
-        pipeSpeed = 2;
-        spawnRate = 120;
+        pipeSpeed = 1.6;
+        spawnRate = 130;
         gameOver = false;
         scoreDisplay.innerText = score;
         playAgainBtn.style.display = "none";
@@ -242,7 +247,7 @@ function startFlappyBird() {
             let p = pipes[i];
             p.x -= pipeSpeed;
 
-            // Pillars purple
+            // Purple pillars
             ctx.fillStyle = "rgb(180, 0, 255)";
             ctx.fillRect(p.x, 0, pipeWidth, p.top);
             ctx.fillRect(p.x, p.bottom, pipeWidth, height - p.bottom);
@@ -262,9 +267,9 @@ function startFlappyBird() {
                 p.passed = true;
                 scoreDisplay.innerText = score;
 
-                // Difficulty increases
+                // Gentle difficulty increase
                 pipeSpeed += difficultyIncrease;
-                spawnRate = Math.max(80, spawnRate - 1);
+                spawnRate = Math.max(90, spawnRate - 1);
             }
         }
 
@@ -282,6 +287,7 @@ function startFlappyBird() {
 
     loop();
 }
+
 
 function loadFlappyBird() {
     const existingGame = document.querySelector(".flappy-game-container, .snake-game-container");
@@ -520,5 +526,6 @@ function loadSnakeGame() {
 
     startSnakeGame();
 }
+
 
 
