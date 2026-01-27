@@ -315,6 +315,18 @@ h2 {
     pointer-events: none;
 }
 
+/* Make the SKILLS tab stand out */
+nav button:nth-child(4) {
+    font-weight: 700;
+    color: var(--purple);
+    text-shadow: 0 0 8px rgba(106,0,255,0.5);
+}
+
+nav button:nth-child(4):hover {
+    color: #b580ff;
+    text-shadow: 0 0 12px rgba(106,0,255,0.8);
+}
+
 
 
 
