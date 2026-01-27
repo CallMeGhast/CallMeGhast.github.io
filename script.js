@@ -1,6 +1,5 @@
 const content = document.getElementById("content");
 const returnBtn = document.getElementById("returnBtn");
-const controllerBtn = document.querySelector(".controller-btn");
 const contactBox = document.getElementById("contactBox");
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -143,8 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.returnHome = returnHome;
-
-    controllerBtn.addEventListener("click", loadGameHub);
 
     content.addEventListener("click", (e) => {
         if (e.target.id === "flappyBtn") loadFlappyBird();
@@ -876,5 +873,6 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
