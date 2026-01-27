@@ -121,7 +121,8 @@ if (section === "skills") {
 }
        returnBtn.classList.remove("show");
         fadeChange(html);
-        
+
+}
 
     window.loadSection = loadSection;
 
@@ -880,6 +881,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
