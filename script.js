@@ -18,131 +18,125 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 200);
     }
 
-    function loadSection(section) {
-        let html = "";
+function loadSection(section) {
+    let html = "";
 
-        if (section === "overview") {
-            html = `
-            <h2>Überblick</h2>
-            <p>
-            Ich habe meinen Schulabschluss nach der 10. Klasse gemacht und habe seit jungen Jahren großes Interesse an der IT.
-            Bereits in der 6. und 7. Klasse habe ich an ersten IT-Kursen teilgenommen und dadurch grundlegende Einblicke in die
-            Welt der Informationstechnologie erhalten. Besonders gefällt mir an der IT das Arbeiten mit Problemen und das Finden
-            von Lösungen. Ich bin motiviert, mir neues Wissen anzueignen und dieses praktisch anzuwenden. Mein Ziel ist es,
-            meine Kenntnisse Schritt für Schritt zu erweitern und mich in diesem Bereich weiterzuentwickeln. Ich arbeite
-            zuverlässig, lerne schnell und habe Freude daran, mich mit technischen Themen zu beschäftigen.
-            </p>`;
-        }
+    if (section === "overview") {
+        html = `
+        <h2>Überblick</h2>
+        <p>
+        Ich habe meinen Schulabschluss nach der 10. Klasse gemacht und habe seit jungen Jahren großes Interesse an der IT.
+        Bereits in der 6. und 7. Klasse habe ich an ersten IT-Kursen teilgenommen und dadurch grundlegende Einblicke in die
+        Welt der Informationstechnologie erhalten. Besonders gefällt mir an der IT das Arbeiten mit Problemen und das Finden
+        von Lösungen. Ich bin motiviert, mir neues Wissen anzueignen und dieses praktisch anzuwenden. Mein Ziel ist es,
+        meine Kenntnisse Schritt für Schritt zu erweitern und mich in diesem Bereich weiterzuentwickeln. Ich arbeite
+        zuverlässig, lerne schnell und habe Freude daran, mich mit technischen Themen zu beschäftigen.
+        </p>`;
+    } else if (section === "experience") {
+        html = `
+        <h2>Erfahrungen</h2>
+        <p>
+        Während meiner Schulzeit habe ich erste praktische Erfahrungen im IT-Bereich gesammelt. In der 6. und 7. Klasse
+        nahm ich an IT-bezogenen Unterrichtseinheiten teil, in denen ich grundlegende Kenntnisse im Umgang mit Computern,
+        Software und digitalen Systemen erwerben konnte.
+        <br><br>
+        In meiner Freizeit habe ich mich selbstständig mit verschiedenen IT-Themen beschäftigt und eigene kleine Projekte
+        umgesetzt. Dazu gehört der Versuch, ein einfaches Spiel mit der Programmiersprache Lua zu entwickeln, sowie das
+        Erstellen einer einfachen Webseite mit HTML und CSS. Dadurch habe ich ein besseres Verständnis für
+        Programmierlogik, Fehleranalyse und strukturiertes Arbeiten entwickelt.
+        <br><br>
+        Diese Erfahrungen haben mein Interesse an der IT weiter verstärkt und motivieren mich, meine Kenntnisse
+        kontinuierlich auszubauen.
+        </p>`;
+    } else if (section === "interests") {
+        html = `
+        <h2>Interessen</h2>
+        <p>
+        Mein Interesse an der Informationstechnologie entwickelte sich schon früh, da mich Computer und digitale Systeme
+        schon immer fasziniert haben. Besonders spannend finde ich es, wie aus Code funktionierende Programme und
+        Anwendungen entstehen.
+        <br><br>
+        Um erste praktische Erfahrungen zu sammeln, habe ich selbst kleine Projekte ausprobiert. Unter anderem habe ich
+        einmal versucht, ein eigenes Spiel mit der Programmiersprache Lua zu erstellen. Außerdem habe ich bereits einfache
+        Webseiten mit HTML und CSS umgesetzt. Diese Projekte haben mir gezeigt, wie vielseitig die IT ist und wie viel man
+        durch eigenes Ausprobieren lernen kann.
+        <br><br>
+        Ich arbeite gerne an Problemen und suche aktiv nach Lösungen, wenn etwas nicht auf Anhieb funktioniert. Mein Ziel
+        ist es, meine Kenntnisse kontinuierlich zu erweitern und meine Interessen in der IT weiter zu vertiefen.
+        </p>`;
+    } else if (section === "skills") {
+        html = `
+        <div class="skills-layout">
 
-        if (section === "experience") {
-            html = `
-            <h2>Erfahrungen</h2>
-            <p>
-            Während meiner Schulzeit habe ich erste praktische Erfahrungen im IT-Bereich gesammelt. In der 6. und 7. Klasse
-            nahm ich an IT-bezogenen Unterrichtseinheiten teil, in denen ich grundlegende Kenntnisse im Umgang mit Computern,
-            Software und digitalen Systemen erwerben konnte.
-            <br><br>
-            In meiner Freizeit habe ich mich selbstständig mit verschiedenen IT-Themen beschäftigt und eigene kleine Projekte
-            umgesetzt. Dazu gehört der Versuch, ein einfaches Spiel mit der Programmiersprache Lua zu entwickeln, sowie das
-            Erstellen einer einfachen Webseite mit HTML und CSS. Dadurch habe ich ein besseres Verständnis für
-            Programmierlogik, Fehleranalyse und strukturiertes Arbeiten entwickelt.
-            <br><br>
-            Diese Erfahrungen haben mein Interesse an der IT weiter verstärkt und motivieren mich, meine Kenntnisse
-            kontinuierlich auszubauen.
-            </p>`;
-        }
+            <!-- LEFT SIDE -->
+            <div class="skills-left">
+                <h2>Kenntnisse mit JavaScript</h2>
 
-        if (section === "interests") {
-            html = `
-            <h2>Interessen</h2>
-            <p>
-            Mein Interesse an der Informationstechnologie entwickelte sich schon früh, da mich Computer und digitale Systeme
-            schon immer fasziniert haben. Besonders spannend finde ich es, wie aus Code funktionierende Programme und
-            Anwendungen entstehen.
-            <br><br>
-            Um erste praktische Erfahrungen zu sammeln, habe ich selbst kleine Projekte ausprobiert. Unter anderem habe ich
-            einmal versucht, ein eigenes Spiel mit der Programmiersprache Lua zu erstellen. Außerdem habe ich bereits einfache
-            Webseiten mit HTML und CSS umgesetzt. Diese Projekte haben mir gezeigt, wie vielseitig die IT ist und wie viel man
-            durch eigenes Ausprobieren lernen kann.
-            <br><br>
-            Ich arbeite gerne an Problemen und suche aktiv nach Lösungen, wenn etwas nicht auf Anhieb funktioniert. Mein Ziel
-            ist es, meine Kenntnisse kontinuierlich zu erweitern und meine Interessen in der IT weiter zu vertiefen.
-            </p>`;
-        }
+                <div class="game-icons-vertical">
+                    <img src="images/FlapBird.png" id="flappyBtn" class="game-icon">
+                    <img src="images/Snake.png" id="snakeBtn" class="game-icon">
+                    <img src="images/DodgeBlocks.png" id="dodgeBtn" class="game-icon">
+                </div>
 
-if (section === "skills") {
-    html = `
-    <div class="skills-layout">
-
-        <!-- LEFT SIDE -->
-        <div class="skills-left">
-            <h2>Kenntnisse mit JavaScript</h2>
-
-            <div class="game-icons-vertical">
-                <img src="images/FlapBird.png" id="flappyBtn" class="game-icon">
-                <img src="images/Snake.png" id="snakeBtn" class="game-icon">
-                <img src="images/DodgeBlocks.png" id="dodgeBtn" class="game-icon">
+                <div class="lua-experience">
+                    <h2>Erfahrung mit Lua</h2>
+                    <button id="openLuaBtn" class="lua-open-btn">Öffnen</button>
+                </div>
             </div>
 
-            <div class="lua-experience">
-                <h2>Erfahrung mit Lua</h2>
-                <button id="openLuaBtn" class="lua-open-btn">Öffnen</button>
+            <!-- RIGHT SIDE -->
+            <div class="skills-right">
+
+                <h2>Grundkenntnisse in Informationstechnologie</h2>
+                <p>
+                PC- & Windows-Kenntnisse<br>
+                Umgang mit Hardware<br>
+                Grundverständnis von Netzwerken<br>
+                Sicherer Umgang mit Internet & E-Mail<br>
+                Microsoft Office / Google Docs<br>
+                Grundkenntnisse im Umgang mit Software & Updates<br>
+                Schnelle Auffassungsgabe bei neuen Programmen<br>
+                Grundwissen im Aufbau von Programmiersprachen<br>
+                Erste Erfahrungen mit CSS, HTML, JavaScript
+                </p>
+
+                <h2>Sprachen</h2>
+                <p>
+                Deutsch – sehr gut<br>
+                Englisch – fließend<br>
+                Arabisch – fließend
+                </p>
+
+                <h2>Kommunikations-Skills</h2>
+                <p>
+                Freundlicher Umgang mit Kunden / Kollegen<br>
+                Erklären technischer Probleme in einfacher Sprache<br>
+                Hilfsbereitschaft
+                </p>
+
+                <h2>Persönliche Stärken</h2>
+                <p>
+                Problemlösungsorientiertes Denken<br>
+                Zuverlässigkeit & Pünktlichkeit<br>
+                Lernbereitschaft<br>
+                Selbstständiges Arbeiten<br>
+                Teamfähigkeit<br>
+                Geduld bei technischen Problemen<br>
+                Sorgfältige Arbeitsweise<br>
+                Verantwortungsbewusstsein
+                </p>
+
             </div>
-        </div>
-
-        <!-- RIGHT SIDE -->
-        <div class="skills-right">
-
-            <h2>Grundkenntnisse in Informationstechnologie</h2>
-            <p>
-            PC- & Windows-Kenntnisse<br>
-            Umgang mit Hardware<br>
-            Grundverständnis von Netzwerken<br>
-            Sicherer Umgang mit Internet & E-Mail<br>
-            Microsoft Office / Google Docs<br>
-            Grundkenntnisse im Umgang mit Software & Updates<br>
-            Schnelle Auffassungsgabe bei neuen Programmen<br>
-            Grundwissen im Aufbau von Programmiersprachen<br>
-            Erste Erfahrungen mit CSS, HTML, JavaScript
-            </p>
-
-            <h2>Sprachen</h2>
-            <p>
-            Deutsch – sehr gut<br>
-            Englisch – fließend<br>
-            Arabisch – fließend
-            </p>
-
-            <h2>Kommunikations-Skills</h2>
-            <p>
-            Freundlicher Umgang mit Kunden / Kollegen<br>
-            Erklären technischer Probleme in einfacher Sprache<br>
-            Hilfsbereitschaft
-            </p>
-
-            <h2>Persönliche Stärken</h2>
-            <p>
-            Problemlösungsorientiertes Denken<br>
-            Zuverlässigkeit & Pünktlichkeit<br>
-            Lernbereitschaft<br>
-            Selbstständiges Arbeiten<br>
-            Teamfähigkeit<br>
-            Geduld bei technischen Problemen<br>
-            Sorgfältige Arbeitsweise<br>
-            Verantwortungsbewusstsein
-            </p>
 
         </div>
 
-    </div>
+        <!-- LUA MODAL -->
+        <div id="luaModal" class="lua-modal">
+            <div class="lua-modal-content">
+                <button id="closeLuaBtn" class="lua-close-btn">X</button>
+                <h2>Lua – XP System & Rundenlogik</h2>
 
-    <!-- LUA MODAL -->
-    <div id="luaModal" class="lua-modal">
-        <div class="lua-modal-content">
-            <button id="closeLuaBtn" class="lua-close-btn">X</button>
-            <h2>Lua – XP System & Rundenlogik</h2>
-
-            <pre><code>local ReplicatedStorage = game:GetService("ReplicatedStorage")
+                <pre><code>local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UpdateXPBar = ReplicatedStorage.RoundEvents.UpdateXPBar
 local ShowXPPopup = ReplicatedStorage.RoundEvents.ShowXPPopup
 local LevelUpEvent = ReplicatedStorage.RoundEvents.LevelUpEvent
@@ -177,7 +171,7 @@ end
 XPManager.XPRequired = XPRequired
 return XPManager</code></pre>
 
-            <pre><code>local Players = game:GetService("Players")
+                <pre><code>local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local XPManager = require(game.ServerScriptService.XPManager)
 
@@ -251,34 +245,33 @@ while true do
     teleportAll(lobbySpawn)
 end</code></pre>
 
+            </div>
         </div>
-    </div>
-    `;
+        `;
 
-    // APPLY HTML
-    fadeChange(html);
-    returnBtn.classList.remove("show");
+        // apply HTML + then wire modal (after DOM updated)
+        fadeChange(html, () => {
+            const openLuaBtn = document.getElementById("openLuaBtn");
+            const luaModal = document.getElementById("luaModal");
+            const closeLuaBtn = document.getElementById("closeLuaBtn");
 
-    // LUA MODAL LOGIC
-    const openLuaBtn = document.getElementById("openLuaBtn");
-    const luaModal = document.getElementById("luaModal");
-    const closeLuaBtn = document.getElementById("closeLuaBtn");
+            if (openLuaBtn && luaModal && closeLuaBtn) {
+                openLuaBtn.onclick = () => luaModal.style.display = "flex";
+                closeLuaBtn.onclick = () => luaModal.style.display = "none";
+                luaModal.onclick = (e) => {
+                    if (e.target === luaModal) luaModal.style.display = "none";
+                };
+            }
+        });
 
-    if (openLuaBtn && luaModal && closeLuaBtn) {
-        openLuaBtn.onclick = () => luaModal.style.display = "flex";
-        closeLuaBtn.onclick = () => luaModal.style.display = "none";
-        luaModal.onclick = (e) => {
-            if (e.target === luaModal) luaModal.style.display = "none";
-        };
+        returnBtn.classList.remove("show");
+        return; // stop here for skills
     }
 
-    return; // IMPORTANT — stops loadSection here
-}
-
-    // DEFAULT APPLY
+    // default for other sections
     fadeChange(html);
     returnBtn.classList.remove("show");
-}   // <-- THIS WAS MISSING. THIS FIXES EVERYTHING.
+}
 
 
     window.loadSection = loadSection;
@@ -1038,6 +1031,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
