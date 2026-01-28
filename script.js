@@ -275,6 +275,10 @@ end</code></pre>
     return; // IMPORTANT — stops loadSection here
 }
 
+    // DEFAULT APPLY
+    fadeChange(html);
+    returnBtn.classList.remove("show");
+}   // <-- THIS WAS MISSING. THIS FIXES EVERYTHING.
 
 
     window.loadSection = loadSection;
@@ -1034,6 +1038,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
