@@ -355,15 +355,15 @@ nav button:nth-child(4):hover {
     display: flex;
     gap: 20px;   /* smaller gap */
     align-items: flex-start;
-    margin-left: 0;
+    margin-left: -20;
 }
 
-/* LEFT COLUMN */
 .skills-left {
-    width: 250px;
+    width: 120px;   /* smaller */
     position: sticky;
     top: 20px;
 }
+
 
 .game-icons-vertical {
     display: flex;
@@ -390,6 +390,7 @@ nav button:nth-child(4):hover {
     transform: scale(1.15);
     filter: drop-shadow(0 0 10px var(--purple));
 }
+
 
 
 
