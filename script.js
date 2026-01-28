@@ -74,7 +74,7 @@ if (section === "skills") {
     html = `
     <div class="skills-layout">
 
-        <!-- LEFT SIDE: JavaScript Skills + Icons -->
+        <!-- LEFT SIDE -->
         <div class="skills-left">
             <h2>Kenntnisse mit JavaScript</h2>
 
@@ -90,7 +90,7 @@ if (section === "skills") {
             </div>
         </div>
 
-        <!-- RIGHT SIDE: Your existing text -->
+        <!-- RIGHT SIDE -->
         <div class="skills-right">
 
             <h2>Grundkenntnisse in Informationstechnologie</h2>
@@ -243,7 +243,7 @@ while true do
 
     local roundTime = 20
     for i = roundTime, 0, -1 do
-        if (roundEnded) then break end
+        if roundEnded then break end
         UpdateTimer:FireAllClients("Time left: " .. i)
         task.wait(1)
     end
@@ -254,23 +254,27 @@ end</code></pre>
         </div>
     </div>
     `;
+
+    // APPLY HTML
+    fadeChange(html);
+    returnBtn.classList.remove("show");
+
+    // LUA MODAL LOGIC
+    const openLuaBtn = document.getElementById("openLuaBtn");
+    const luaModal = document.getElementById("luaModal");
+    const closeLuaBtn = document.getElementById("closeLuaBtn");
+
+    if (openLuaBtn && luaModal && closeLuaBtn) {
+        openLuaBtn.onclick = () => luaModal.style.display = "flex";
+        closeLuaBtn.onclick = () => luaModal.style.display = "none";
+        luaModal.onclick = (e) => {
+            if (e.target === luaModal) luaModal.style.display = "none";
+        };
+    }
+
+    return; // IMPORTANT — stops loadSection here
 }
 
-returnBtn.classList.remove("show");
-fadeChange(html);
-
-// LUA MODAL LOGIC
-const openLuaBtn = document.getElementById("openLuaBtn");
-const luaModal = document.getElementById("luaModal");
-const closeLuaBtn = document.getElementById("closeLuaBtn");
-
-if (openLuaBtn && luaModal && closeLuaBtn) {
-    openLuaBtn.onclick = () => luaModal.style.display = "flex";
-    closeLuaBtn.onclick = () => luaModal.style.display = "none";
-    luaModal.onclick = (e) => {
-        if (e.target === luaModal) luaModal.style.display = "none";
-    };
-}
 
 
     window.loadSection = loadSection;
@@ -1030,6 +1034,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
