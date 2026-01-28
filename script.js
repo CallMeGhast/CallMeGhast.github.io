@@ -83,6 +83,11 @@ if (section === "skills") {
                 <img src="images/Snake.png" id="snakeBtn" class="game-icon">
                 <img src="images/DodgeBlocks.png" id="dodgeBtn" class="game-icon">
             </div>
+
+            <div class="lua-experience">
+                <h2>Erfahrung mit Lua</h2>
+                <button id="openLuaBtn" class="lua-open-btn">Öffnen</button>
+            </div>
         </div>
 
         <!-- RIGHT SIDE: Your existing text -->
@@ -130,13 +135,143 @@ if (section === "skills") {
         </div>
 
     </div>
+
+    <!-- LUA MODAL -->
+    <div id="luaModal" class="lua-modal">
+        <div class="lua-modal-content">
+            <button id="closeLuaBtn" class="lua-close-btn">X</button>
+            <h2>Lua – XP System & Rundenlogik</h2>
+
+            <pre><code>local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UpdateXPBar = ReplicatedStorage.RoundEvents.UpdateXPBar
+local ShowXPPopup = ReplicatedStorage.RoundEvents.ShowXPPopup
+local LevelUpEvent = ReplicatedStorage.RoundEvents.LevelUpEvent
+
+local XPManager = {}
+
+local function XPRequired(level)
+    return 100 + (level - 1) * 25
+end
+
+function XPManager.EarnXP(player, amount)
+    local stats = player:FindFirstChild("leaderstats")
+    if not stats then return end
+
+    local xp = stats:FindFirstChild("XP")
+    local level = stats:FindFirstChild("Level")
+    if not xp or not level then return end
+
+    xp.Value += amount
+    ShowXPPopup:FireClient(player, amount)
+    UpdateXPBar:FireClient(player, xp.Value, XPRequired(level.Value))
+
+    while xp.Value >= XPRequired(level.Value) do
+        xp.Value -= XPRequired(level.Value)
+        level.Value += 1
+
+        LevelUpEvent:FireClient(player, level.Value)
+        UpdateXPBar:FireClient(player, xp.Value, XPRequired(level.Value))
+    end
+end
+
+XPManager.XPRequired = XPRequired
+return XPManager</code></pre>
+
+            <pre><code>local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local XPManager = require(game.ServerScriptService.XPManager)
+
+local UpdateTimer = ReplicatedStorage.RoundEvents.UpdateTimer
+
+local lobbySpawn = workspace.Lobby
+local minigames = {
+    workspace.MiniGames.MiniGame1,
+    workspace.MiniGames.MiniGame2.Base,
+}
+
+local function teleportAll(position)
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = position.CFrame + Vector3.new(0, 3, 0)
+        end
+    end
+end
+
+local function connectWinDetector(minigame, endRoundCallback)
+    local winModel = minigame:FindFirstChild("BasicWin")
+    if not winModel then return end
+
+    local endPart = winModel:FindFirstChild("EndPart")
+    if not endPart then return end
+
+    local connection
+    connection = endPart.Touched:Connect(function(hit)
+        local character = hit.Parent
+        local player = game.Players:GetPlayerFromCharacter(character)
+        if player then
+            connection:Disconnect()
+            endRoundCallback(player)
+        end
+    end)
+end
+
+while true do
+    for i = 10, 0, -1 do
+        UpdateTimer:FireAllClients("Next game in " .. i)
+        task.wait(1)
+    end
+
+    local chosen = minigames[math.random(1, #minigames)]
+    local chosenName = chosen.Name
+    local MiniGameChosen = ReplicatedStorage.RoundEvents.MiniGameChosen
+
+    for i = 3, 0, -1 do
+        UpdateTimer:FireAllClients("Next is " .. chosenName .. " in " .. i)
+        task.wait(1)
+    end
+
+    teleportAll(chosen)
+    MiniGameChosen:FireAllClients(chosen)
+
+    local roundEnded = false
+
+    connectWinDetector(chosen, function(winner)
+        roundEnded = true
+        print(winner.Name .. " won the round!")
+        XPManager.EarnXP(winner, 25)
+    end)
+
+    local roundTime = 20
+    for i = roundTime, 0, -1 do
+        if (roundEnded) then break end
+        UpdateTimer:FireAllClients("Time left: " .. i)
+        task.wait(1)
+    end
+
+    teleportAll(lobbySpawn)
+end</code></pre>
+
+        </div>
+    </div>
     `;
 }
 
-       returnBtn.classList.remove("show");
-        fadeChange(html);
+returnBtn.classList.remove("show");
+fadeChange(html);
 
+// LUA MODAL LOGIC
+const openLuaBtn = document.getElementById("openLuaBtn");
+const luaModal = document.getElementById("luaModal");
+const closeLuaBtn = document.getElementById("closeLuaBtn");
+
+if (openLuaBtn && luaModal && closeLuaBtn) {
+    openLuaBtn.onclick = () => luaModal.style.display = "flex";
+    closeLuaBtn.onclick = () => luaModal.style.display = "none";
+    luaModal.onclick = (e) => {
+        if (e.target === luaModal) luaModal.style.display = "none";
+    };
 }
+
 
     window.loadSection = loadSection;
 
@@ -895,6 +1030,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
