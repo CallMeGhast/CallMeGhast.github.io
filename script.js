@@ -72,53 +72,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
 if (section === "skills") {
     html = `
-    <h2>Grundkenntnisse in Informationstechnologie</h2>
-    <p>
-    PC- & Windows-Kenntnisse<br>
-    Umgang mit Hardware<br>
-    Grundverständnis von Netzwerken<br>
-    Sicherer Umgang mit Internet & E-Mail<br>
-    Microsoft Office / Google Docs<br>
-    Grundkenntnisse im Umgang mit Software & Updates<br>
-    Schnelle Auffassungsgabe bei neuen Programmen<br>
-    Grundwissen im Aufbau von Programmiersprachen<br>
-    Erste Erfahrungen mit CSS, HTML, JavaScript
-    </p>
+    <div class="skills-layout">
 
-    <h2>Sprachen</h2>
-    <p>
-    Deutsch – sehr gut<br>
-    Englisch – fließend<br>
-    Arabisch – fließend
-    </p>
+        <!-- LEFT SIDE: JavaScript Skills + Icons -->
+        <div class="skills-left">
+            <h2>Kenntnisse mit JavaScript</h2>
 
-    <h2>Kommunikations-Skills</h2>
-    <p>
-    Freundlicher Umgang mit Kunden / Kollegen<br>
-    Erklären technischer Probleme in einfacher Sprache<br>
-    Hilfsbereitschaft
-    </p>
+            <div class="game-icons-vertical">
+                <img src="images/FlapBird.png" id="flappyBtn" class="game-icon">
+                <img src="images/Snake.png" id="snakeBtn" class="game-icon">
+                <img src="images/DodgeBlocks.png" id="dodgeBtn" class="game-icon">
+            </div>
+        </div>
 
-    <h2>Persönliche Stärken</h2>
-    <p>
-    Problemlösungsorientiertes Denken<br>
-    Zuverlässigkeit & Pünktlichkeit<br>
-    Lernbereitschaft<br>
-    Selbstständiges Arbeiten<br>
-    Teamfähigkeit<br>
-    Geduld bei technischen Problemen<br>
-    Sorgfältige Arbeitsweise<br>
-    Verantwortungsbewusstsein
-    </p>
+        <!-- RIGHT SIDE: Your existing text -->
+        <div class="skills-right">
 
-    <h2>Mini Games</h2>
-    <div class="game-icons">
-    <img src="images/FlapBird.png" id="flappyBtn" class="game-icon">
-    <img src="images/Snake.png" id="snakeBtn" class="game-icon">
-    <img src="images/DodgeBlocks.png" id="dodgeBtn" class="game-icon">
+            <h2>Grundkenntnisse in Informationstechnologie</h2>
+            <p>
+            PC- & Windows-Kenntnisse<br>
+            Umgang mit Hardware<br>
+            Grundverständnis von Netzwerken<br>
+            Sicherer Umgang mit Internet & E-Mail<br>
+            Microsoft Office / Google Docs<br>
+            Grundkenntnisse im Umgang mit Software & Updates<br>
+            Schnelle Auffassungsgabe bei neuen Programmen<br>
+            Grundwissen im Aufbau von Programmiersprachen<br>
+            Erste Erfahrungen mit CSS, HTML, JavaScript
+            </p>
+
+            <h2>Sprachen</h2>
+            <p>
+            Deutsch – sehr gut<br>
+            Englisch – fließend<br>
+            Arabisch – fließend
+            </p>
+
+            <h2>Kommunikations-Skills</h2>
+            <p>
+            Freundlicher Umgang mit Kunden / Kollegen<br>
+            Erklären technischer Probleme in einfacher Sprache<br>
+            Hilfsbereitschaft
+            </p>
+
+            <h2>Persönliche Stärken</h2>
+            <p>
+            Problemlösungsorientiertes Denken<br>
+            Zuverlässigkeit & Pünktlichkeit<br>
+            Lernbereitschaft<br>
+            Selbstständiges Arbeiten<br>
+            Teamfähigkeit<br>
+            Geduld bei technischen Problemen<br>
+            Sorgfältige Arbeitsweise<br>
+            Verantwortungsbewusstsein
+            </p>
+
+        </div>
+
     </div>
     `;
 }
+
        returnBtn.classList.remove("show");
         fadeChange(html);
 
@@ -881,6 +895,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
