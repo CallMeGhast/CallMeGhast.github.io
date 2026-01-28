@@ -24,14 +24,20 @@ body {
 }
 
 main {
-    margin-top:70px;
-    padding: 40px;
+    margin-top: 70px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+
+    /* top | right | bottom | left */
+    padding: 40px 40px 40px 15px;
+
     max-width: 850px;
     margin-inline: auto;
     line-height: 1.7;
     color: #ccc;
-    min-height: calc(100vh - 70px);
-    overflow-y: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--purple) #111;
 }
 
 /* Custom dark scrollbar for Chrome/Edge */
@@ -355,16 +361,16 @@ nav button:nth-child(4):hover {
     display: flex;
     gap: 20px;
     align-items: flex-start;
-    justify-content: flex-start;   /* <-- THIS is the fix */
+    justify-content: flex-start;
 }
-
 
 .skills-left {
     width: 120px;
     position: sticky;
     top: 20px;
-    margin-left: -50px;   /* stronger push */
+    /* no margin-left */
 }
+
 
 
 
@@ -393,6 +399,7 @@ nav button:nth-child(4):hover {
     transform: scale(1.15);
     filter: drop-shadow(0 0 10px var(--purple));
 }
+
 
 
 
