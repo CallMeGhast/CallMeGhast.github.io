@@ -353,15 +353,17 @@ nav button:nth-child(4):hover {
 
 .skills-layout {
     display: flex;
-    gap: 20px;   /* smaller gap */
+    gap: 20px;
     align-items: flex-start;
+    justify-content: flex-start;   /* <-- THIS is the fix */
 }
 
+
 .skills-left {
-    width: 200px;
+    width: 120px;
     position: sticky;
     top: 20px;
-    margin-left: -120px;   /* stronger push */
+    margin-left: -50px;   /* stronger push */
 }
 
 
@@ -391,6 +393,7 @@ nav button:nth-child(4):hover {
     transform: scale(1.15);
     filter: drop-shadow(0 0 10px var(--purple));
 }
+
 
 
 
