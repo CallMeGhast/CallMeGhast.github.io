@@ -112,10 +112,10 @@ if (section === "skills") {
     </p>
 
     <h2>Mini Games</h2>
-    <div class="game-hub" style="margin-top:20px;">
-        <button id="flappyBtn">Flappy Bird</button>
-        <button id="snakeBtn">Snake</button>
-        <button id="dodgeBtn">Dodge the Blocks</button>
+    <div class="game-icons">
+    <img src="images/FlapBird.png" id="flappyBtn" class="game-icon">
+    <img src="images/Snake.png" id="snakeBtn" class="game-icon">
+    <img src="images/DodgeBlocks.png" id="dodgeBtn" class="game-icon">
     </div>
     `;
 }
@@ -881,6 +881,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
