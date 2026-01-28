@@ -351,11 +351,13 @@ nav button:nth-child(4):hover {
 }
 
 
-.skills-layout {
-    display: flex;
-    gap: 40px;
-    align-items: flex-start;
+.skills-left {
+    width: 160px;   /* smaller width */
+    position: sticky;
+    top: 20px;
+    margin-left: 0;
 }
+
 
 /* LEFT COLUMN */
 .skills-left {
@@ -389,6 +391,7 @@ nav button:nth-child(4):hover {
     transform: scale(1.15);
     filter: drop-shadow(0 0 10px var(--purple));
 }
+
 
 
 
