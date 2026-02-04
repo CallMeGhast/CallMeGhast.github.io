@@ -333,39 +333,42 @@ const introSentences = [
 
 let introIndex = 0;
 
-window.addEventListener("load", () => {
+function startIntroPanel() {
     const panel = document.getElementById("introPanel");
     const text = document.getElementById("introText");
-    const nextBtn = document.getElementById("introNextBtn");
 
+    introIndex = 0;
     text.textContent = introSentences[introIndex];
+    panel.style.display = "flex";
+}
 
-    nextBtn.onclick = () => {
-        // Fade out
-        text.classList.add("intro-fade-out");
+window.addEventListener("load", startIntroPanel);
+
+document.getElementById("introNextBtn").onclick = () => {
+    const text = document.getElementById("introText");
+
+    text.classList.add("intro-fade-out");
+
+    setTimeout(() => {
+        introIndex++;
+
+        if (introIndex >= introSentences.length) {
+            document.getElementById("introPanel").style.display = "none";
+            return;
+        }
+
+        text.textContent = introSentences[introIndex];
+
+        text.classList.remove("intro-fade-out");
+        text.classList.add("intro-fade-in");
 
         setTimeout(() => {
-            introIndex++;
+            text.classList.remove("intro-fade-in");
+        }, 350);
 
-            if (introIndex >= introSentences.length) {
-                panel.style.display = "none";
-                return;
-            }
+    }, 350);
+};
 
-            // Change text
-            text.textContent = introSentences[introIndex];
-
-            // Fade in
-            text.classList.remove("intro-fade-out");
-            text.classList.add("intro-fade-in");
-
-            setTimeout(() => {
-                text.classList.remove("intro-fade-in");
-            }, 400);
-
-        }, 400);
-    };
-});
 
 
 // -----------------------------------------------------
@@ -1088,6 +1091,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
