@@ -326,9 +326,9 @@ end</code></pre>
 // INTRO PANEL LOGIC
 const introSentences = [
     "Willkommen zu meiner Webseite.",
-    "Oben können Sie mit den Knöpfen zu den jeweiligen Fenstern navigieren.",
-    "Unter Skills können sie Minispiele finden.",
-    "Unten rechts finden Sie meine Kontaktinformationen, wenn Sie auf den Knopf drücken."
+    "Oben befinden sich Schaltflächen zur Navigation zwischen den einzelnen Bereichen.",
+    "Im Abschnitt Skills sind verschiedene Minispiele verfügbar.",
+    "Unten rechts befindet sich der Kontaktbereich."
 ];
 
 let introIndex = 0;
@@ -1103,6 +1103,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
