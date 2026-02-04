@@ -323,6 +323,50 @@ end</code></pre>
     loadSection("overview");
 });
 
+// INTRO PANEL LOGIC
+const introSentences = [
+    "Willkommen zu meiner Webseite.",
+    "Oben können Sie mit den Knöpfen zu den jeweiligen Fenstern navigieren.",
+    "Unter Skills können sie Minispiele finden.",
+    "Unten rechts finden Sie meine Kontaktinformationen, wenn Sie auf den Knopf drücken."
+];
+
+let introIndex = 0;
+
+window.addEventListener("load", () => {
+    const panel = document.getElementById("introPanel");
+    const text = document.getElementById("introText");
+    const nextBtn = document.getElementById("introNextBtn");
+
+    text.textContent = introSentences[introIndex];
+
+    nextBtn.onclick = () => {
+        // Fade out
+        text.classList.add("intro-fade-out");
+
+        setTimeout(() => {
+            introIndex++;
+
+            if (introIndex >= introSentences.length) {
+                panel.style.display = "none";
+                return;
+            }
+
+            // Change text
+            text.textContent = introSentences[introIndex];
+
+            // Fade in
+            text.classList.remove("intro-fade-out");
+            text.classList.add("intro-fade-in");
+
+            setTimeout(() => {
+                text.classList.remove("intro-fade-in");
+            }, 400);
+
+        }, 400);
+    };
+});
+
 
 // -----------------------------------------------------
 // FLAPPY BIRD (with highscore)
@@ -1044,6 +1088,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
