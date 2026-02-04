@@ -373,10 +373,12 @@ document.getElementById("introNextBtn").onclick = () => {
     }, 350);
 };
 
-// REOPEN GUIDE WHEN CLICKING THE "?" BUTTON
-document.getElementById("helpButton").onclick = () => {
-    startIntroPanel();
-};
+window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("helpButton").onclick = () => {
+        startIntroPanel();
+    };
+});
+
 
 
 
@@ -1101,6 +1103,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
