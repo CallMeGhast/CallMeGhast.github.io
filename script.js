@@ -41,46 +41,42 @@ function loadSection(section) {
         html = `
 <h2>Selbstständiges Lernen über Online‑Ressourcen</h2>
 <p>
-Ich habe mir die Grundlagen der IT und Programmierung selbstständig über das schauhen von Online videos, Online‑Artikel und das ausprobieren von
-verschiedene Lernplattformen beigebracht. 
-<br><br>
-Dabei lernte ich, wie Code aufgebaut ist, wie man Probleme eigenständig löst
-und wie man gezielt nach Lösungen recherchiert. Dieses selbstständige Lernen hat mir eine solide Basis vermittelt und
-mir geholfen, komplexere Themen schneller zu verstehen.
+Ich habe mir IT Grundlagen und Programmierung selbstständig über Online videos, Online Artikel und Lernplattformen
+beigebracht. Dabei lernte ich, Probleme eigenständig zu lösen und gezielt nach Lösungen zu suchen.
 </p>
 <h2>Erstellung meiner eigenen Webseite</h2>
 <p>
-Durch das Entwickeln dieser Webseite und der integrierten Minispiele habe ich praktische Erfahrung im Programmieren
-gesammelt und ein deutlich besseres Verständnis für Code Strukturen, Logik und Fehleranalyse gewonnen.  
-<br><br>
-Diese Projekte haben mir gezeigt, wie viel man durch eigenes Ausprobieren lernen kann und wie schnell man Fortschritte
-macht, wenn man aktiv an realen Aufgaben arbeitet.  
+Durch die Entwicklung dieser Webseite und der Minispiele sammelte ich praktische Erfahrung mit HTML, CSS und JavaScript.
+Dabei lernte ich, technische Probleme Schritt für Schritt zu lösen und entwickelte ein tieferes verständis für Code Struktur.
 </p>
 <h2>Spieleentwicklung mit Lua</h2>
 <p>
-Ich habe in Roblox Studio mit Lua experimentiert und eigene Spielideen umgesetzt. Dabei lernte ich, wie Spielmechaniken
-funktionieren, wie man Skripte strukturiert und wie man Gameplay testet und verbessert. 
-<br><br>
-An meinem eigenen Spielkonzept arbeite ich weiterhin aktiv, wodurch ich meine Programmierkenntnisse und mein Verständnis für Game Development stetig
-erweitere.
+In Roblox Studio habe ich mit Lua experimentiert und eigene Spielideen umgesetzt. Dadurch lernte ich grundlegende
+Spielmechaniken, Skriptlogik und das Testen von Gameplay. An meinem eigenen Spielkonzept arbeite ich weiterhin aktiv.
+</p>
+<h2>Umgang mit PC‑Hardware</h2>
+<p>
+Ich kenne die wichtigsten PC‑Komponenten und ihre Funktionen und habe bereits einen eigenen PC aufgebaut. Dadurch habe
+ich praktische Erfahrung mit Hardware, Kompatibilität und einfacher Fehlerdiagnose gesammelt.
 </p>`;
         
     } else if (section === "interests") {
         html = `
-        <h2>Interessen</h2>
-        <p>
-        Mein Interesse an der Informationstechnologie entwickelte sich schon früh, da mich Computer und digitale Systeme
-        schon immer fasziniert haben. Besonders spannend finde ich es, wie aus Code funktionierende Programme und
-        Anwendungen entstehen.
-        <br><br>
-        Um erste praktische Erfahrungen zu sammeln, habe ich selbst kleine Projekte ausprobiert. Unter anderem habe ich
-        einmal versucht, ein eigenes Spiel mit der Programmiersprache Lua zu erstellen. Außerdem habe ich bereits einfache
-        Webseiten mit HTML und CSS umgesetzt. Diese Projekte haben mir gezeigt, wie vielseitig die IT ist und wie viel man
-        durch eigenes Ausprobieren lernen kann.
-        <br><br>
-        Ich arbeite gerne an Problemen und suche aktiv nach Lösungen, wenn etwas nicht auf Anhieb funktioniert. Mein Ziel
-        ist es, meine Kenntnisse kontinuierlich zu erweitern und meine Interessen in der IT weiter zu vertiefen.
-        </p>`;
+<h2>Interesse an IT & Technik</h2>
+<p>
+Ich interessiere mich allgemein für Computer, Software und technische Systeme. Besonders spannend finde ich es zu
+verstehen, wie Programme funktionieren und wie man technische Probleme löst.
+</p>
+<h2>Interesse an Problemlösung & Logik</h2>
+<p>
+Ich arbeite gerne an Aufgaben, bei denen man logisch denken und Schritt für Schritt Lösungen finden muss. Besonders
+interessiert mich, wie man Fehler analysiert und Systeme so verbessert, dass sie zuverlässig funktionieren.
+</p>
+<h2>Kreative digitale Projekte</h2>
+<p>
+Mir machsts spaß eigene Ideen digital umzusetzen sei es durch kleine Spiele, Webseiten oder andere Projekte.
+Dabei gefällt mir die Mischung aus Kreativität und Technik.
+</p>`;
     } else if (section === "skills") {
         html = `
         <div class="skills-layout">
@@ -1048,6 +1044,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
