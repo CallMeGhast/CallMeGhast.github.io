@@ -493,12 +493,10 @@ nav button:nth-child(4):hover {
 
 /* Panel Body */
 .intro-content {
-    background: #0e0e0e;       /* same black as your theme */
+    background: #0e0e0e;
     padding: 30px;
     text-align: center;
     color: white;
-    opacity: 1;
-    transition: opacity 0.35s ease;  /* smooth fade */
 }
 
 /* Next Button */
@@ -549,6 +547,7 @@ nav button:nth-child(4):hover {
 .help-button:hover {
     color: #8a2be2;        /* subtle purple hover */
 }
+
 
 
 
