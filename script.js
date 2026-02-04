@@ -42,7 +42,9 @@ function loadSection(section) {
 <h2>Selbstständiges Lernen über Online‑Ressourcen</h2>
 <p>
 Ich habe mir die Grundlagen der IT und Programmierung selbstständig über das schauhen von Online videos, Online‑Artikel und das ausprobieren von
-verschiedene Lernplattformen beigebracht. Dabei lernte ich, wie Code aufgebaut ist, wie man Probleme eigenständig löst
+verschiedene Lernplattformen beigebracht. 
+<br><br>
+Dabei lernte ich, wie Code aufgebaut ist, wie man Probleme eigenständig löst
 und wie man gezielt nach Lösungen recherchiert. Dieses selbstständige Lernen hat mir eine solide Basis vermittelt und
 mir geholfen, komplexere Themen schneller zu verstehen.
 </p>
@@ -50,14 +52,16 @@ mir geholfen, komplexere Themen schneller zu verstehen.
 <p>
 Durch das Entwickeln dieser Webseite und der integrierten Minispiele habe ich praktische Erfahrung im Programmieren
 gesammelt und ein deutlich besseres Verständnis für Code Strukturen, Logik und Fehleranalyse gewonnen.  
+<br><br>
 Diese Projekte haben mir gezeigt, wie viel man durch eigenes Ausprobieren lernen kann und wie schnell man Fortschritte
 macht, wenn man aktiv an realen Aufgaben arbeitet.  
 </p>
 <h2>Spieleentwicklung mit Lua</h2>
 <p>
 Ich habe in Roblox Studio mit Lua experimentiert und eigene Spielideen umgesetzt. Dabei lernte ich, wie Spielmechaniken
-funktionieren, wie man Skripte strukturiert und wie man Gameplay testet und verbessert. An meinem eigenen Spielkonzept
-arbeite ich weiterhin aktiv, wodurch ich meine Programmierkenntnisse und mein Verständnis für Game Development stetig
+funktionieren, wie man Skripte strukturiert und wie man Gameplay testet und verbessert. 
+<br><br>
+An meinem eigenen Spielkonzept arbeite ich weiterhin aktiv, wodurch ich meine Programmierkenntnisse und mein Verständnis für Game Development stetig
 erweitere.
 </p>`;
         
@@ -1044,6 +1048,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
