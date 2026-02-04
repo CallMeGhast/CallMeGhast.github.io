@@ -338,6 +338,10 @@ function startIntroPanel() {
     const text = document.getElementById("introText");
 
     introIndex = 0;
+
+    // Reset fade classes so the first sentence appears clean
+    text.classList.remove("intro-fade-out", "intro-fade-in");
+
     text.textContent = introSentences[introIndex];
     panel.style.display = "flex";
 }
@@ -368,6 +372,12 @@ document.getElementById("introNextBtn").onclick = () => {
 
     }, 350);
 };
+
+// REOPEN GUIDE WHEN CLICKING THE "?" BUTTON
+document.getElementById("helpButton").onclick = () => {
+    startIntroPanel();
+};
+
 
 
 
@@ -1091,6 +1101,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
