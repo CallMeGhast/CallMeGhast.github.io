@@ -526,6 +526,13 @@ nav button:nth-child(4):hover {
     opacity: 1;
 }
 
+/* ADD THIS DIRECTLY BELOW */
+#introText {
+    opacity: 1;
+    transition: opacity 0.35s ease;
+}
+
+
 /* Persistent help button (top-right "?" icon) */
 .help-button {
     position: fixed;
@@ -546,6 +553,7 @@ nav button:nth-child(4):hover {
 .help-button:hover {
     background: #8a2be2;
 }
+
 
 
 
