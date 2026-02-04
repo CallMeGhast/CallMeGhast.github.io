@@ -62,19 +62,19 @@ ich praktische Erfahrung mit Hardware, Kompatibilität und einfacher Fehlerdiagn
         
     } else if (section === "interests") {
         html = `
-<h2>Interesse an IT & Technik</h2>
+<h2>IT & Technik</h2>
 <p>
 Ich interessiere mich allgemein für Computer, Software und technische Systeme. Besonders spannend finde ich es zu
 verstehen, wie Programme funktionieren und wie man technische Probleme löst.
 </p>
-<h2>Interesse an Problemlösung & Logik</h2>
+<h2>Problemlösung & Logik</h2>
 <p>
 Ich arbeite gerne an Aufgaben, bei denen man logisch denken und Schritt für Schritt Lösungen finden muss. Besonders
 interessiert mich, wie man Fehler analysiert und Systeme so verbessert, dass sie zuverlässig funktionieren.
 </p>
 <h2>Kreative digitale Projekte</h2>
 <p>
-Mir machsts spaß eigene Ideen digital umzusetzen sei es durch kleine Spiele, Webseiten oder andere Projekte.
+Mir macht es Spaß, eigene Ideen digital umzusetzen sei es durch kleine Spiele, Webseiten oder andere Projekte.
 Dabei gefällt mir die Mischung aus Kreativität und Technik.
 </p>`;
     } else if (section === "skills") {
@@ -1044,6 +1044,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
