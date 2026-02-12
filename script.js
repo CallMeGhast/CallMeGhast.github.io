@@ -149,114 +149,61 @@ Dabei gefällt mir die Mischung aus Kreativität und Technik.
                 <button id="closeLuaBtn" class="lua-close-btn">X</button>
                 <h2>Lua – XP System & Rundenlogik</h2>
 
-                <pre><code>local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UpdateXPBar = ReplicatedStorage.RoundEvents.UpdateXPBar
-local ShowXPPopup = ReplicatedStorage.RoundEvents.ShowXPPopup
-local LevelUpEvent = ReplicatedStorage.RoundEvents.LevelUpEvent
+                <pre><code>-- ServerScriptService/RoundManager.lua
 
-local XPManager = {}
+local Players = game:GetService("Players")
 
-local function XPRequired(level)
-    return 100 + (level - 1) * 25
-end
+local ROUND_TIME = 30
+local INTERMISSION = 10
 
-function XPManager.EarnXP(player, amount)
-    local stats = player:FindFirstChild("leaderstats")
-    if not stats then return end
+local inRound = false
 
-    local xp = stats:FindFirstChild("XP")
-    local level = stats:FindFirstChild("Level")
-    if not xp or not level then return end
-
-    xp.Value += amount
-    ShowXPPopup:FireClient(player, amount)
-    UpdateXPBar:FireClient(player, xp.Value, XPRequired(level.Value))
-
-    while xp.Value >= XPRequired(level.Value) do
-        xp.Value -= XPRequired(level.Value)
-        level.Value += 1
-
-        LevelUpEvent:FireClient(player, level.Value)
-        UpdateXPBar:FireClient(player, xp.Value, XPRequired(level.Value))
-    end
-end
-
-XPManager.XPRequired = XPRequired
-return XPManager</code></pre>
-
-                <pre><code>local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local XPManager = require(game.ServerScriptService.XPManager)
-
-local UpdateTimer = ReplicatedStorage.RoundEvents.UpdateTimer
-
-local lobbySpawn = workspace.Lobby
-local minigames = {
-    workspace.MiniGames.MiniGame1,
-    workspace.MiniGames.MiniGame2.Base,
-}
-
-local function teleportAll(position)
+local function getAlivePlayers()
+    local alive = {}
     for _, player in ipairs(Players:GetPlayers()) do
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = position.CFrame + Vector3.new(0, 3, 0)
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            table.insert(alive, player)
         end
     end
-end
-
-local function connectWinDetector(minigame, endRoundCallback)
-    local winModel = minigame:FindFirstChild("BasicWin")
-    if not winModel then return end
-
-    local endPart = winModel:FindFirstChild("EndPart")
-    if not endPart then return end
-
-    local connection
-    connection = endPart.Touched:Connect(function(hit)
-        local character = hit.Parent
-        local player = game.Players:GetPlayerFromCharacter(character)
-        if player then
-            connection:Disconnect()
-            endRoundCallback(player)
-        end
-    end)
+    return alive
 end
 
 while true do
-    for i = 10, 0, -1 do
-        UpdateTimer:FireAllClients("Next game in " .. i)
+    -- Intermission
+    inRound = false
+    print("Intermission started")
+    task.wait(INTERMISSION)
+
+    -- Start round
+    inRound = true
+    print("Round started")
+
+    local timeLeft = ROUND_TIME
+    while timeLeft > 0 and #getAlivePlayers() > 1 do
         task.wait(1)
+        timeLeft -= 1
     end
 
-    local chosen = minigames[math.random(1, #minigames)]
-    local chosenName = chosen.Name
-    local MiniGameChosen = ReplicatedStorage.RoundEvents.MiniGameChosen
-
-    for i = 3, 0, -1 do
-        UpdateTimer:FireAllClients("Next is " .. chosenName .. " in " .. i)
-        task.wait(1)
-    end
-
-    teleportAll(chosen)
-    MiniGameChosen:FireAllClients(chosen)
-
-    local roundEnded = false
-
-    connectWinDetector(chosen, function(winner)
-        roundEnded = true
-        print(winner.Name .. " won the round!")
-        XPManager.EarnXP(winner, 25)
-    end)
-
-    local roundTime = 20
-    for i = roundTime, 0, -1 do
-        if roundEnded then break end
-        UpdateTimer:FireAllClients("Time left: " .. i)
-        task.wait(1)
-    end
-
-    teleportAll(lobbySpawn)
+    -- End round
+    inRound = false
+    print("Round ended")
 end</code></pre>
+
+                <pre><code>-- StarterPlayerScripts/XPUIController.lua
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local XPEvent = ReplicatedStorage:WaitForChild("XPEvent")
+
+local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local ui = playerGui:WaitForChild("HUD")
+
+local xpBar = ui:WaitForChild("XPBar")
+local levelLabel = ui:WaitForChild("LevelLabel")
+
+XPEvent.OnClientEvent:Connect(function(level, progress)
+    levelLabel.Text = "Level " .. level
+    xpBar.Size = UDim2.new(progress, 0, xpBar.Size.Y.Scale, 0)
+end)</code></pre>
 
             </div>
         </div>
@@ -1103,6 +1050,7 @@ function loadDodgeGame() {
 
     startDodgeGame();
 }
+
 
 
 
